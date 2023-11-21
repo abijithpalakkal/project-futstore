@@ -1,0 +1,383 @@
+<%-include("./layout/head")%>
+    <style>
+        .address-box {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            border-radius: 15px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+        }
+        .address-box:hover {
+            background-color: #f0f0f0;
+        }
+        .address-box label {
+            display: block;
+        }
+        .address-box input[type="radio"] {
+            margin-right: 5px;
+        }
+        .address-box p {
+            margin-bottom: 0;
+        }
+        .product-img {
+            max-width: 50px;
+        }
+        .payment-box {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 15px;
+            cursor: pointer;
+        }
+        .payment-box label {
+            display: block;
+            position: relative;
+            cursor: pointer;
+        }
+        .payment-box input[type="radio"] {
+            margin-right: 5px;
+        }
+        .place-order-button {
+            width: 100%;
+            background-color: orange;
+            color: white;
+        }
+        .payment-icons {
+            font-size: 20px;
+        }
+        .rightsection{
+            border: 1px solid #ccc;
+            padding: 10px;
+            border-radius: 15px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+        }
+        .navibg {
+    background-color: rgb(248, 237, 237);
+}
+@media (min-width: 460px) {
+    #brandlogoof {
+        width: 200px;
+    }
+}
+
+    </style>
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+</head>
+<body>
+    <%-include("./partials/navbar2") %>
+</nav>
+    <div class="container">
+        <div class="row">
+            <!-- Addresses (Left Side) -->
+            <div class="col-lg-6">
+                <h2 style="color: orange;">Select Address</h2>
+                <%for(var i=0;i<userdata.length;i++){%>
+
+                
+                <div class="address-box">
+                    <input type="radio" id="address<%= i %>" name="address" value="<%=userdata[i]._id%>">
+                    <label for="address<%= i %>">Shipping Address <%=i%></label>
+                    <p><%=userdata[i].fullAddress%></p>
+                    <p>pin code:<%=userdata[i].pincode%></p>
+                    <p>mobile no:<%=userdata[i].mobile_no%></p>
+                </div>
+                <%}%>
+                <h6 style="color: orange;cursor: pointer;" onclick="clickaddress()">add or edit address </h6>
+            </div>
+            
+            <!-- Product Summary and Payment Options (Right Side) -->
+            <div class="col-lg-6 rightsection mt-4">
+                <!-- Product Summary -->
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Product</th>
+                            <th>Image</th>
+                            <th>Price (₹)</th>
+                            <th>Quantity</th>
+                            <th>Total (₹)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <%var grandtotal=0
+                        for(var i=0;i<cartdata.productid.length;i++){
+                            %>
+                        <tr>
+                            <td><%=cartdata.productid[i].ProductName%></td>
+                            <td><img src="/admin/uploads/<%=cartdata.productid[i].Images[0]%>" class="product-img" alt="Product 1 Image"></td>
+                            <td>₹<%=cartdata.productid[i].OfferPrice%></td>
+                            <td><%=cartdata.quantity[i]%></td>
+                            <% var total=cartdata.productid[i].OfferPrice*cartdata.quantity[i]
+                                grandtotal=grandtotal+total%>
+                            <td>₹<%=total%> </td>
+                            
+                        </tr>
+                        <%}%>
+                    </tbody>
+                </table>
+
+                <hr>
+
+                <!-- Grand Total -->
+                <div class="text-right">
+                    <%if(coupondata){
+                        const a=(grandtotal*coupondata.discountpercentage)/100 %>
+                        <p>Grand Total: ₹<%=Math.floor(grandtotal-a)%> + ₹5(delivery fee)</p>
+                        <p style="color: green;">coupon <%=coupondata.couponcode%> applied.saved rupees <%=a%></p>
+                    <%}else{%>
+                    <p>Grand Total: ₹<%=grandtotal%> + ₹5(delivery fee)</p>
+                    <%}%>
+                </div>
+
+                <!-- Payment Options -->
+                <%if(coupondata){
+                var dw=(grandtotal*coupondata.discountpercentage)/100 
+                }%>
+                <div class="payment-box" <%if(coupondata){%>onclick="paymentselect('<%=grandtotal-dw%>')"<%}else{%>onclick="paymentselect('<%=grandtotal%>')"<%}%> id="online">
+                    
+                    <label for="online" id="onlinea"><i class="payment-icons fas fa-credit-card" style="color: orange;"></i> Pay Online</label>
+                </div>
+                <div class="payment-box" onclick="paymentselectcod()" id="cod">
+                    <label for="cod" id="coda"><i class="payment-icons fas fa-money-bill" style="color: orange;"></i> Cash on Delivery</label>
+                </div>
+                <div class="payment-box" <%if(walletbalance.wallet>grandtotal){%>onclick="paymentselectwallet()"<%}else{%>onclick="lesswalletbalnce()"<%}%> id="wallet">
+                    <label for="wallet" id="walleta"><i class="fas fa-wallet" style="color: orange;"></i> Wallet</label>
+                </div>
+
+                <!-- Place Order Button (Centered) -->
+                <%if(coupondata){
+                    const a=(grandtotal*coupondata.discountpercentage)/100 %>
+                <button class="btn  mt-3 place-order-button" onclick="placeorder('<%=Math.floor(grandtotal-a)%>')">Place Order</button>
+                <%}else{%>
+                <button class="btn  mt-3 place-order-button" onclick="placeorder('<%=grandtotal%>')">Place Order</button>
+
+                <%}%>
+            </div>
+        </div>
+    </div>
+    <script>
+       function clickaddress(){
+        window.location.href="/addaddress"
+       }
+        function lesswalletbalnce(){
+            swal("insufficient wallet balance");
+        }
+        
+        function paymentselectwallet(){
+            document.getElementById("cod").style.backgroundColor = "";
+            document.getElementById("coda").style.backgroundColor = "";
+            document.getElementById("online").style.backgroundColor = "";
+            document.getElementById("onlinea").style.backgroundColor = "";
+            document.getElementById("wallet").style.backgroundColor = "orange";
+            document.getElementById("walleta").style.backgroundColor = "orange";
+        }
+        
+
+        function paymentselectcod(){
+          
+            document.getElementById("cod").style.backgroundColor = "orange";
+            document.getElementById("coda").style.backgroundColor = "orange";
+            document.getElementById("online").style.backgroundColor = "";
+            document.getElementById("onlinea").style.backgroundColor = "";
+            document.getElementById("wallet").style.backgroundColor = "";
+            document.getElementById("walleta").style.backgroundColor = "";
+        
+            
+        }
+
+        function paymentselect(total){
+
+
+            const selectedAddress = document.querySelector('input[name="address"]:checked');
+            if (selectedAddress) {
+                
+            document.getElementById("cod").style.backgroundColor = "";
+            document.getElementById("coda").style.backgroundColor = "";
+            document.getElementById("online").style.backgroundColor = "orange";
+            document.getElementById("onlinea").style.backgroundColor = "orange";
+            document.getElementById("wallet").style.backgroundColor = "";
+            document.getElementById("walleta").style.backgroundColor = "";
+                const selectedAddressValue = selectedAddress.value;
+            console.log("hello")
+            $.ajax({
+        method: "POST",
+        url: "/onlinepayment",
+        data:{
+            method:"onlinepayment",
+            totalprice:total,
+            addressindex:selectedAddressValue
+    },
+    success:function(res){
+       var selectedAddressValue=res.address
+       var total1=res.total
+       
+        console.log(res)
+        var options = {
+    key: 'rzp_test_G7FnMwqJajZD1e', // Enter the Key ID generated from the Dashboard
+    amount: res.total*100, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+    currency: "INR",
+    name: "FUTSTORE", //your business name
+    description: "Test Transaction",
+    image: "https://example.com/your_logo",
+    order_id: res.response.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+    handler: async function (response) {
+    // Handle the payment response here
+    
+    
+$.ajax({
+        method: "POST",
+        url: "/placeorder",
+        data:{addressindex:selectedAddressValue,
+        total:total1,
+        method:"online payment"
+    },
+    success: async function (response) {
+        if(response=="done"){
+            await swal({
+  title: "Hurrah!",
+  text: "order placed successfully",
+  icon: "success",
+  buttons: {
+    ok: "continue shopping",
+    
+    customButton: {
+      text: "track order",
+      value: "custom",
+      className: "my-custom-class",
+    }
+}
+})
+.then((value) => {
+  if (value === "ok") {
+    window.location.href="/productview"
+  }  else if (value === "custom") {
+    // Custom button clicked
+window.location.href="/myorders/1"
+
+  } else {
+    // Handle other cases
+window.location.href="/myorders/1"
+
+  }
+})
+    }
+       }})
+
+  },
+   
+    prefill: { //We recommend using the prefill parameter to auto-fill customer's contact information especially their phone number
+        name: "Gaurav Kumar", //your customer's name
+        email: "gaurav.kumar@example.com",
+        contact: "9000090000" //Provide the customer's phone number for better conversion rates 
+    },
+    notes: {
+        address: "Razorpay Corporate Office"
+    },
+    theme: {
+        color: "#3399cc"
+    }
+    
+};
+var rzp1 = new Razorpay(options);
+rzp1.open();
+e.preventDefault();
+    }
+
+       })
+    }else{
+        alert("select an address")
+    }
+
+        }
+
+
+
+        async function placeorder(gtotal1) {
+            if(document.getElementById("cod").style.backgroundColor =="orange" || document.getElementById("wallet").style.backgroundColor=="orange"){
+  const selectedAddress = document.querySelector('input[name="address"]:checked');
+    const total=parseInt(gtotal1)+parseInt(5)
+  if (selectedAddress) {
+    // Get the value of the selected radio input (in this case, it's the index of the address)
+    const selectedAddressValue = selectedAddress.value;
+    var method1;
+  if(document.getElementById("cod").style.backgroundColor =="orange" ){
+    method1="cod"
+  }else{
+    method1="wallet"
+  }
+
+
+    
+    
+$.ajax({
+        method: "POST",
+        url: "/placeorder",
+        data:{addressindex:selectedAddressValue,
+        total:total,
+        method:method1
+    },
+    success: async function (response) {
+        if(response=="done"){
+            await swal({
+  title: "Hurrah!",
+  text: "order placed successfully",
+  icon: "success",
+  buttons: {
+    ok: "continue shopping",
+    
+    customButton: {
+      text: "track order",
+      value: "custom",
+      className: "my-custom-class",
+    }
+}
+})
+.then((value) => {
+  if (value === "ok") {
+    window.location.href="/productview"
+  }  else if (value === "custom") {
+    // Custom button clicked
+window.location.href="/myorders/1"
+
+  } else {
+    // Handle other cases
+window.location.href="/myorders/1"
+
+  }
+});
+        }else{
+            swal("something went wrong.try again");
+        }
+    }
+       })
+
+
+    // You can use this index to access the selected address from your `userdata` array if needed.
+  } else {
+    // Handle the case where no address is selected
+    alert("Please select an address.");
+  }
+
+  // Rest of your code for placing the order
+}
+else{
+    alert("choose any payment method")
+}
+
+}  
+
+    
+</script>
+    <!-- Include Bootstrap JS (Optional) -->
+   
+
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-alpha1/dist/js/bootstrap.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</body>
+</html>

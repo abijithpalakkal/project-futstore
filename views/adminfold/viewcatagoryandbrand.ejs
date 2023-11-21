@@ -1,0 +1,106 @@
+<%-include("./layout/head") %>
+
+<style>
+    .orange-btn {
+        background-color: #f5450d;
+        border-color: #f5450d;
+    }
+   
+</style>
+</head>
+<body>
+      <!-- Navbar -->
+   <%-include("./partials/navbar") %>
+</nav>
+
+<%-include("./partials/sidebar") %>
+
+   <!-- mainform -->
+
+        </div>
+        <div class="container mt-5 col-md-9">
+            <!-- Category Box -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h4>Categories</h4>
+                </div>
+                <div class="card-body">
+                    <ul class="list-group" id="categoryList">
+                        <%if(data.length){
+                            for(i=0;i<data.length;i++){%>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <%=data[i].Category%>
+                            <div>
+                                <a href="/editcatagory/<%=data[i]._id%>"><button type="button" class="btn btn-warning btn-sm mr-2">Edit</button></a>
+                                <a href=""><button type="button" class="btn btn-danger btn-sm orange-btn" onclick="removeCategory(this)">Remove</button></a>
+                            </div>
+                        </li>
+                    <%}}%>
+                    </ul>
+                </div>
+                <div class="card-footer">
+                    <a href="/addcatagory"><button type="button" class="btn btn-primary" onclick="addCategory()">Add Category</button></a>
+                </div>
+            </div>
+    
+            <!-- Brand Box -->
+            <div class="card">
+                <div class="card-header">
+                    <h4>Brands</h4>
+                </div>
+                <div class="card-body">
+                    <ul class="list-group" id="brandList">
+                        <%for(var i=0;i<data1.brandnames.length;i++){%>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <%=data1.brandnames[i]%>
+                            <div>
+                                <button type="button" class="btn btn-danger btn-sm orange-btn" onclick="removeBrand(this)">Remove</button>
+                            </div>
+                        </li>
+                      <%}%>
+                    </ul>
+                </div>
+                <div class="card-footer">
+                    <a href="/addbrand"><button type="button" class="btn btn-primary" onclick="addBrand()">Add Brand</button></a>
+                </div>
+            </div>
+        </div>
+
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    
+        <script>
+            // Function to add a category
+            function addCategory() {
+                const categoryList = document.getElementById("categoryList");
+                const listItem = document.createElement("li");
+                listItem.className = "list-group-item d-flex justify-content-between align-items-center";
+                listItem.innerHTML = `
+                    New Category
+                    <div>
+                        <button type="button" class="btn btn-warning btn-sm mr-2">Edit</button>
+                        <button type="button" class="btn btn-danger btn-sm" onclick="removeCategory(this)">Remove</button>
+                    </div>
+                `;
+                categoryList.appendChild(listItem);
+            }
+    
+            // Function to remove a category
+            function removeCategory(button) {
+                const listItem = button.closest("li");
+                listItem.remove();
+            }
+    
+            // Function to add a brand
+           
+    
+            // Function to remove a brand
+            function removeBrand(button) {
+                const listItem = button.closest("li");
+                listItem.remove();
+            }
+        </script>
+        <script src="/admin/script/navbarandsidebar.js"></script>
+</body>
+</html>

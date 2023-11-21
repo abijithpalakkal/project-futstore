@@ -1,0 +1,184 @@
+<%-include("./layout/head") %>
+<link href="/admin/css/navbarandsidebar.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Navbar -->
+   <%-include("./partials/navbar") %>
+    </nav>
+
+    <%-include("./partials/sidebar") %>
+            </div>
+
+             <!-- Form -->
+ <div class="container mt-5 col-md-9">
+    <h1 class="text-center mb-4"><%if(locals.data){%>edit Product<%}else{%>add product<%}%></h1>
+    <form action="<%= locals.data ? '/editproducts/' + locals.data._id : '/addproduct' %>" method="post" enctype="multipart/form-data">
+        <!-- Product Name -->
+        <div class="form-group">
+            <label for="productName">Product Name:</label>
+            <input type="text" class="form-control" id="productName" name="ProductName" required value="<%=locals.data.ProductName%>">
+        </div>
+
+        <!-- Description -->
+        <div class="form-group">
+            <label for="productDescription">Description:</label>
+            <textarea class="form-control" id="productDescription" name="Description" rows="4" ><%= locals.data.Description %></textarea>
+        </div>
+
+        <!-- Brand Name -->
+        <div class="form-group">
+            <label for="brandName">Brand Name:</label>
+            <select class="form-control" id="brandName" name="Brand">
+              <option value="<%=data.Brand%>" selected><%=data.Brand%></option>
+              <% for (var i = 0; i < brand.brandnames.length; i++) {
+                const brandName = brand.brandnames[i];
+                if (brandName !== data.Brand) { %>
+                  <option value="<%= brandName %>"><%= brandName %></option>
+                <% }
+              } %>
+              <!-- Add more options as needed -->
+            </select>
+            
+        </div>
+
+        <!-- Category -->
+        <div class="form-group">
+            <label for="category">Category:</label>
+            <select class="form-control" id="category" name="Catagory">
+  <option value="<%=data.Catagory%>" selected><%=data.Catagory%></option>
+  <% for (var i = 0; i < catagory1.length; i++) {
+    const categoryOption = catagory1[i].Category;
+    if (categoryOption !== data.Catagory) { %>
+      <option value="<%= categoryOption %>"><%= categoryOption %></option>
+    <% }
+  } %>
+  <!-- Add more options as needed -->
+</select>
+
+        </div>
+
+        <!-- Type -->
+        <div class="form-group">
+            <label for="type">Type:</label>
+            <select class="form-control" id="type" name="Type">
+              <% for (var i = 0; i < catagory1.length; i++) { %>
+                <option value="<%=data.Type%>" selected><%=data.Type%></option>
+                  <optgroup label="<%= catagory1[i].Category %>">
+                      <% for (var j = 0; j < catagory1[i].type.length; j++) { %>
+                          <option value="<%= catagory1[i].type[j] %>"><%= catagory1[i].type[j] %></option>
+                      <% } %>
+                  </optgroup>
+              <% } %>
+          </select>
+        </div>
+
+        <!-- Real Price -->
+        <div class="form-group">
+            <label for="realPrice">Real Price:</label>
+            <input type="number" class="form-control" id="realPrice" name="RealPrice" step="0.01"value="<%=locals.data.RealPrice%>">
+        </div>
+
+        <!-- Discount Price -->
+        <div class="form-group">
+            <label for="discountPrice">Discount Price:</label>
+            <input type="number" class="form-control" id="discountPrice" name="OfferPrice" step="0.01" value="<%=locals.data.OfferPrice%>">
+        </div>
+
+        <div class="form-group">
+          <label for="discountPrice">color:</label>
+          <input type="string" class="form-control" id="discountPrice" name="Color" step="0.01" value="<%=locals.data.Color%>">
+      </div>
+
+      <div class="col-md-3">
+          
+
+        <!-- Sub Images -->
+        <div class="form-group">
+            <label for="subImages">Images (up to 4 img):</label>
+            <input type="file" class="form-control-file" id="subImages" name="Images" accept="image/*" multiple value="<%=locals.data.Images%>">
+        </div>
+
+        </div>
+        <!-- Color and Quantity Section -->
+        <div id="colorFieldsContainer">
+          <%
+            locals.data.Size.forEach((size, index) => { %>
+              <div class="form-group">
+                <label for="productColors">Add size and quantity:</label>
+                <div class="row">
+                  <div class="col-md-3">
+                    <select class="form-control" name="Size">
+                      <option value="sm" <%=size === 'sm' ? 'selected' : '' %>>sm</option>
+                      <option value="md" <%= size === 'md' ? 'selected' : '' %>>md</option>
+                      <option value="l" <%= size === 'l' ? 'selected' : '' %>>l</option>
+                      <option value="xl" <%= size === 'xl' ? 'selected' : '' %>>xl</option>
+                      <option value="xxl" <%=size === 'xxl' ? 'selected' : '' %>>xxl</option>
+                      <!-- Add more options as needed -->
+                    </select>
+                  </div>
+                  <div class="col-md-3">
+                    <input type="number" class="form-control mb-2" name="Quantity" placeholder="Quantity" value="<%= locals.data.Quantity[index] %>">
+                  </div>
+                </div>
+              </div>
+            <%}); %>
+          </div>
+          <button type="button" class="btn btn-primary mb-2" id="addColor">Add size</button>
+          
+          
+
+        <!-- Specifications Section -->
+        <div id="specFieldsContainer">
+          <%
+            locals.data.Speckey.forEach((specKey, index) => { %>
+              <div class="form-group">
+                <label for="specifications">Specifications:</label>
+                <div class="row">
+                  <div class="col-md-5">
+                    <input type="text" class="form-control mb-2" name="Speckey" placeholder="Specification Name" value="<%= specKey %>">
+                  </div>
+                  <div class="col-md-5">
+                    <input type="text" class="form-control mb-2" name="Specvalue" placeholder="Specification Value" value="<%= locals.data.Specvalue[index] %>">
+                  </div>
+                </div>
+              </div>
+            <% }); %>
+          </div>
+          <button type="button" class="btn btn-primary mb-2" id="addSpec">Add Specification</button>
+           <!-- Submit Button -->
+        <div class="form-group">
+            <button type="submit" class="btn btn-success btn-lg btn-block">edit Product</button>
+        </div>
+    </form>
+</div>
+
+            
+
+    <!-- Bootstrap JS (you may need to include jQuery and Popper.js as well) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-SO5v5b3BY3u8pVuQa5FJ3s3SMlpb7s5K1o5Z/C4JF9x3mI1pETf5f5ECx9QQhr2qG" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <script src="/admin/script/navbarandsidebar.js"></script>
+
+    <script>
+        const addColorButton = document.getElementById('addColor');
+const colorFieldsContainer = document.getElementById('colorFieldsContainer');
+
+addColorButton.addEventListener('click', function () {
+  const newColorFields = colorFieldsContainer.firstElementChild.cloneNode(true);
+  colorFieldsContainer.appendChild(newColorFields);
+});
+
+const addSpecButton = document.getElementById('addSpec');
+const specFieldsContainer = document.getElementById('specFieldsContainer');
+
+addSpecButton.addEventListener('click', function () {
+  const newSpecFields = specFieldsContainer.firstElementChild.cloneNode(true);
+  specFieldsContainer.appendChild(newSpecFields);
+});
+
+    </script>
+</body>
+</html>

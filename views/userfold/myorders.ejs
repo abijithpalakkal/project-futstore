@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order History</title>
+    <!-- Include Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Include Font Awesome CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        .product-images {
+            width: 50px;
+            height: 50px;
+            display: flex;
+        }
+        .product-images img {
+            width: 100%;
+            height: auto;
+        }
+        .mainheading{
+            color: #f5450d;
+        }
+        .tableheading{
+            color:rgb(80, 77, 77)
+        }
+
+
+
+        @media (min-width: 460px) {
+    #brandlogoof {
+        width: 200px;
+    }
+}
+.navibg{
+  background-color: rgb(248, 237, 237);
+}
+.sidebar {
+    width: 25%;
+    background-color: #f8f8f8;
+    padding: 20px;
+    height: 100vh;
+}
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+}
+.sidebar ul li {
+    padding: 10px 0;
+}
+.sidebar ul li a {
+    text-decoration: none; /* Remove underlines from anchor links */
+    color: #7b7474; /* Default color for the links */
+}
+.sidebar ul li a.active {
+    color: #f5450d; /* Highlighted color for the active link */
+}
+.sidebar ul li i {
+    margin-right: 10px;
+}
+
+/* Responsive styles */
+@media (max-width: 767px) {
+    
+    .sidebar {
+        display: block; /* Show the sidebar when toggled */
+        width: 100%; /* Make the sidebar take up full width */
+display: block; /* Show the sidebar when toggled */
+    }
+}
+.profile{
+    background-color: #e86b11; 
+    height: 150px;
+    display: flex;
+    align-items: end;
+}
+.status{
+    font-weight: bold;
+    color: #e86b11;
+}
+#pagination{
+    display: flex;
+    justify-content:end;
+}
+#next a{
+    background-color: #e86b11;
+    color: black;
+}
+#prev a{
+    background-color: #e86b11;
+    color: black;
+}
+#page-info span{
+    color: #f5450d;
+    font-weight: bold
+}
+    </style>
+</head>
+<body>
+    <%-include("./partials/navbar2") %>
+</nav>
+
+<%-include("./partials/profilesidebar") %>
+<div class="container mt-2 col-md-9">
+    <div class="container mt-5">
+        <h1 class="mb-4 mainheading">Order History</h1>
+        <div class="table-responsive">
+            <table class="table table-bordered">
+                <thead>
+                    <tr class="tableheading">
+                        <th>Order ID</th>
+                        <th>Products</th>
+                        <th>Total</th>
+                        <th>Status</th>
+                        <th>Date</th>
+                        <th>Payment Method</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Example order data (you'll load this dynamically using JavaScript) -->
+                    <%for(var i=0;i<data.length;i++){%>
+                    <tr>
+                     
+                     
+                        
+                        <td><%= data[i]._id%></td>
+                        <td>
+                            <div class="d-flex align-items-center">
+                                <div class="product-images mr-3">
+                                    <img src="/admin/uploads/<%=data[i].items[0].productid.Images[0]%>" alt="Product">
+                                </div>
+                                <%=data[i].items[0].productid.ProductName%>
+                              <%const itemlength=data[i].items.length%>
+                            <a href="/orderdetails/<%=data[i]._id%>" class="ml-2" data-toggle="tooltip" data-placement="bottom" title="Product 5, Product 6, ..." style="color: rgb(142, 132, 132);">+<%if(data[i].items.length!=1){%><%=itemlength-1%> more...<%}else{%>more details...<%}%></a>
+                        </div>
+                        </td>
+                        <td><%=data[i].total_price%></td>
+                       <td class="status"><%if(data[i].status=="product received"){%><p>return successful(amount refunded to the wallet)</p><%}else{%><%=data[i].status%><%}%></td> 
+                       <% const month = data[i].orderdate.toLocaleString('default', { month: 'long' }); // Get the full month name
+                       const day = data[i].orderdate.getDate(); // Get the day of the month
+                       const year = data[i].orderdate.getFullYear(); // Get the full year
+                       
+                       // Format as "Month Date, Year"
+                       const formattedDate = `${month} ${day}, ${year}`;
+                       %>
+                        <td><%=formattedDate%></td>
+                        <td><%=data[i].method%></td>
+                    </tr>
+                <%}%>
+                    <!-- Add more rows for each order as needed -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="container mt-4" id="pagination">
+        <div id="pagination-container">
+            <ul class="pagination">
+                <li class="page-item" id="prev">
+                    <% if (page > 1) { %>
+                        <a class="page-link" href="/myorders/<%= page - 1 %>">Previous</a>
+                    <% } else { %>
+                        <span class="page-link">Previous</span>
+                    <% } %>
+                </li>
+                <li id="page-info" class="page-item"><span class="page-link">Page <%= page %> of <%= totalPages %></span></li>
+                <li class="page-item" id="next">
+                    <% if (page < totalPages) { %>
+                        <a class="page-link" href="/myorders/<%= page + 1 %>">Next</a>
+                    <% } else { %>
+                        <span class="page-link">Next</span>
+                    <% } %>
+                </li>
+            </ul>
+        </div>
+        
+</div>
+
+
+
+
+
+
+
+    <!-- Include Bootstrap JavaScript and jQuery -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        // Function to add a category
+       
+    
+        // Toggle sidebar on smaller screens
+document.querySelector('.navbar-toggler').addEventListener('click', function () {
+const sidebar = document.getElementById('sidebar');
+sidebar.classList.toggle('show');
+});
+
+// Highlight active sidebar link
+const sidebarLinks = document.querySelectorAll('.nav-link');
+sidebarLinks.forEach((link) => {
+link.addEventListener('click', function () {
+    // Remove 'active' class from all links
+    sidebarLinks.forEach((l) => {
+        l.classList.remove('active');
+    });
+
+    // Add 'active' class to the clicked link
+    link.classList.add('active');
+});
+});</script>
+</body>
+</html>

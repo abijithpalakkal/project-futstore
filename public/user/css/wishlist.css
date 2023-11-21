@@ -1,0 +1,8 @@
+.navibg {
+    background-color: rgb(248, 237, 237);
+}
+@media (min-width: 460px) {
+    #brandlogoof {
+        width: 200px;
+    }
+}

@@ -1,0 +1,299 @@
+
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Form</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Include Font Awesome CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link href="/user/css/sidebar.css" rel="stylesheet">
+
+
+    <style>
+        /* Custom CSS for the page */
+        body {
+            background-color: #fff; /* Set background color to white */
+        }
+
+        .order-details {
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* Box shadow */
+        }
+
+        .product-image {
+            max-width: 100px; /* Adjust the maximum image width as needed */
+        }
+
+        .total {
+            font-weight: bold;
+        }
+
+        .shipping-address {
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* Box shadow */
+        }
+
+        .cancel-btn {
+            background-color: #FF4500; /* Set the cancel button color to red */
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-weight: bold;
+            float: right; /* Align the button to the right */
+            cursor: pointer;
+        }
+        .shipping-address{
+            width: 50%;
+        }
+    </style>
+</head>
+<body>
+    <%-include("./partials/navbar2") %>
+</nav>
+
+
+
+    
+    <%-include("./partials/profilesidebar") %>
+   <!-- mainform -->
+<div class="container mt-2 col-md-9">
+    <div class="container mt-5">
+        <div class="order-details">
+            <h2 class="text-center" style="color: #FF4500;">Order Details</h2>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Product</th>
+                        <th>Product Name</th>
+                        <th>Product ID</th>
+                        <th>Quantity</th>
+                        <th>Price</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                   <% for(var i=0;i<data.items.length;i++){%>
+                    <tr>
+                        <td>
+                            <img src="/admin/uploads/<%=data.items[i].productid.Images[0]%>" class="product-image">
+                        </td>
+                        <td><%=data.items[i].productid.ProductName%></td>
+                        <td><%=data.items[i].productid._id%></td>
+                        <td><%=data.items[i].quantity%></td>
+                        <td><%=data.items[i].productid.OfferPrice%></td>
+                        <%const total=data.items[i].productid.OfferPrice*data.items[i].quantity%>
+                        <td><%= total %></td>
+                    </tr>
+                
+                <%}%>
+                    <!-- Repeat the product details row for each product -->
+                    
+                        
+                    <!-- Add more product rows as needed -->
+                </tbody>
+            </table>
+
+            <div class="total text-right mt-3">
+                <p>Grand Total:<%=data.total_price%></p>
+            </div>
+            <% if (data.status=='order placed' || data.status=='processing'||data.status=='Packed') { %>
+                <button class="cancel-btn btn btn-danger" onclick="cancelorder('<%=data._id%>','<%=data.status%>')">Cancel Order</button>
+            <% } else if(data.status =="return requested" ||data.status =="Return Approved"){%>
+                <button class="cancel-btn btn btn-danger" onclick="cancelreturnrequest('<%=data._id%>','<%=data.status%>')">Cancel Return Request</button>
+            <%}else if (data.status === "Delivered") { %>
+                <button class="cancel-btn btn btn-danger" data-toggle="modal" data-target="#returnReasonModal">Return Product</button>
+            <% } else if(data.status === "cancelled") { %>
+                <button class="cancel-btn btn btn-danger">Order Cancelled</button>
+            <% } %>
+            
+        </div>
+          <%if(addressdata){%>
+        <div class="shipping-address">
+            <h4>Shipping Address</h4>
+            <p><%=addressdata.addresses[0].fullAddress%></p>
+            <p>pin code:<%=addressdata.addresses[0].pincode%></p>
+            <p>mobile no:<%=addressdata.addresses[0].mobile_no%></p>
+
+            <!-- Add more shipping address details as needed -->
+        </div>
+  <%}%>
+      
+    </div>
+</div>
+
+
+
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="returnReasonModal" tabindex="-1" role="dialog" aria-labelledby="returnReasonModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="returnReasonModalLabel">Select Return Reason</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Please select the reason for returning the product:</p>
+                <form action="/returnproductrequest/<%=data._id%>" method="post" id="returnReasonForm">
+                    <div class="form-group">
+                        <label for="returnReason">Reason:</label>
+                        <select class="form-control" id="returnReason" name="returnReason">
+                            <option value="defective">Defective product</option>
+                            <option value="wrong_item">Wrong item received</option>
+                            <option value="changed_mind">Changed my mind</option>
+                            <option value="size_doesnt_fit">Size doesn't fit</option>
+                            <option value="others">Others</option>
+                        </select>
+                    </div>
+                    <div class="form-group" id="otherReasonInput" style="display: none;">
+                        <label for="otherReason">Specify Other Reason:</label>
+                        <input type="text" class="form-control" id="otherReason" name="otherReason">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary" id="submitButton">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script>
+function cancelreturnrequest(id,data){
+    console.log(id)
+    swal({
+  title: "confirm return cancellation  ",
+  text: "are you sure,you want to cancel the return request",
+  icon: "warning",
+  buttons: true,
+  dangerMode: true,
+})
+.then((willCancel) => {
+        if (willCancel) {
+            // User clicked the "OK" button, handle the cancellation here
+            // For example, you can make an AJAX request to cancel the order on the server
+            // Once the cancellation is successful, you can redirect the user or show a success message
+            if(data=="return requested"){
+            $.ajax({
+        method: "POST",
+        url: "/cancelreturnrequest",
+        data:{orderid:id},
+       success: async function (response) {
+            await swal("product return request is cancelled", {
+             icon: "success",
+            });
+            window.location.href="/myorders/"+1
+        }
+    })
+}else{
+    swal("The request Cannot Be Cancelled as it is already approved for return");
+}
+            
+        } 
+    
+    })
+}
+
+
+    $(document).ready(function () {
+        $('#returnReason').change(function () {
+            if ($(this).val() === 'others') {
+                $('#otherReasonInput').show();
+                $('#otherReason').prop('required', true);
+            } else {
+                $('#otherReasonInput').hide();
+                $('#otherReason').prop('required', false);
+            }
+        });
+        
+        // Optional: Disable submit button if form is invalid
+        $('#returnReasonForm').submit(function() {
+            if (!this.checkValidity()) {
+                $('#submitButton').prop('disabled', true);
+            }
+        });
+    });
+
+
+
+     function cancelorder(id,data){
+        swal({
+  title: "confirm cancellation",
+  text: "are you sure,you want to cancel the order",
+  icon: "warning",
+  buttons: true,
+  dangerMode: true,
+})
+.then((willCancel) => {
+        if (willCancel) {
+            // User clicked the "OK" button, handle the cancellation here
+            // For example, you can make an AJAX request to cancel the order on the server
+            // Once the cancellation is successful, you can redirect the user or show a success message
+            if(data!="Delivered"){
+            $.ajax({
+        method: "POST",
+        url: "/cancelorder",
+        data:{orderid:id},
+       success: async function (response) {
+            await swal("Order has been cancelled", {
+             icon: "success",
+            });
+            window.location.href="/myorders/"+1
+        }
+    })
+}else{
+    swal("The Order Cannot Be Cancelled as it is already delivered");
+}
+            
+        } else {
+            // User clicked the "Cancel" button, do nothing or provide feedback
+            swal("Order cancellation canceled", {
+                icon: "info",
+            });
+        }
+    
+    })
+}
+
+/*function returnproduct(){
+    swal({
+  title: "confirm",
+  text: "are you sure,you want to return the product",
+  icon: "warning",
+  buttons: true,
+  dangerMode: true,
+})
+}*/
+
+</script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="/user/script/navbar2.js"></script>
+ 
+</body>
+</html>
+
+
+
+

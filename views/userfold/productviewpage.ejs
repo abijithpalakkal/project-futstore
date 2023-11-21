@@ -1,0 +1,363 @@
+<%-include("./layout/head")%>
+<link href="/user/css/viewproduct.css" rel="stylesheet"
+><link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+<style>
+    
+    .cardimagediv{
+        display: flex;
+        align-items: center;
+        height:70%
+    }
+    .cardimagediv img{
+        width:100%;
+        max-height: 100%;
+    }
+    .card{
+        height: 100%;
+    }
+    a {
+        text-decoration: none; /* Remove underline */
+        color: inherit; /* Inherit the text color */
+    }
+
+    a:hover {
+        text-decoration: none; /* Remove underline on hover */
+        color: inherit; /* Inherit the text color on hover */
+    }
+    @media (min-width: 460px) {
+    #brandlogoof {
+        width: 200px;
+    }
+}
+.discount-tag {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background-color:orange;/* Set your desired background color */
+    color: #ffffff; /* Set your desired text color */
+    padding: 4px 8px; /* Adjust padding as needed */
+    border-radius: 4px; /* Optional: Add rounded corners */
+    font-size: 12px; /* Set your desired font size */
+    z-index: 1; /* Ensure the tag appears above the image */
+}
+   
+</style>
+</head>
+<body>
+    <!-- Navbar -->
+    <%-include("./partials/navbar2") %>
+    </nav>
+    
+    
+
+    <div class="container-fluid mt-4">
+        <div class="row">
+            <!-- Sidebar -->
+            <div class="col-md-2 sidebar bg-light p-4" id="sidebarselect">
+                <h4 class="text-warning">Filters</h4>
+            
+                <!-- Category Filter -->
+                
+            
+                <h5>Type</h5>
+<% for (var i = 0; i < Catagory.length; i++) { %>
+  <h6><%=Catagory[i].Category %></h6>
+  <% for (var j = 0; j < Catagory[i].type.length; j++) { %>
+    <div class="form-check">
+      <input class="form-check-input2" type="checkbox" id="type-laptop" value="<%= Catagory[i].type[j] %>">
+      <label class="form-check-label" for="type-laptop"><%= Catagory[i].type[j] %></label>
+    </div>
+  <% } %>
+<% } %>
+
+
+
+
+
+
+
+
+<!-- Add more checkboxes for additional types as needed -->
+
+                <!-- Color Filter -->
+                <h5>Color</h5>
+                <select class="form-select" id="color-filter">
+                    <option value="all">All</option>
+                    <%for(var i=0;i<color.length;i++){%>
+                    <option value="<%=color[i]%>"><%=color[i]%></option>
+                    <%}%>
+                    <!-- Add more color options as needed -->
+                </select>
+                <h5>Brands</h5>
+                <%for(var i=0;i<brand[0].brandnames.length;i++){%>
+                
+                <div class="form-check">
+                    <input class="form-check-input1" type="checkbox" id="brand-puma" value="<%=brand[0].brandnames[i]%>">
+                    <label class="form-check-label" for="brand-puma"><%=brand[0].brandnames[i]%></label>
+                </div>
+            <%}%>
+        
+                <!-- Size Filter -->
+               <!-- Size Filter as Checkboxes -->
+               <h5>Size</h5>
+               <select class="form-select" id="size-filter">
+                   <option value="all">All</option>
+                   <option value="small">Small</option>
+                   <option value="medium">Medium</option>
+                   <option value="large">Large</option>
+                   <!-- Add more sizes as needed -->
+               </select>
+               
+            
+                <!-- Price Range Selector -->
+              
+            
+                <h5>Price Range</h5>
+    <select class="form-select" id="price-range-filter">
+        <option value="all">All</option>
+        <option value="0-1000">$0 - $1000</option>
+        <option value="1001-2000">$1001 - $2000</option>
+        <option value="2001-3000">$2001 - $3000</option>
+        <option value="3001-4000">$3001 - $4000</option>
+        <option value="4001-5000">$4001 - $5000</option>
+        <option value="5001-6000">$5001 - $6000</option>
+        <option value="6001-7000">$6001 - $7000</option>
+        <option value="7001-8000">$7001 - $8000</option>
+        <option value="8000+">$8000 and above</option>
+    </select>
+
+    <!-- Sort Filter as Checkboxes -->
+    <h4 class="text-warning">Sort</h4>
+
+<div class="form-check">
+    <input class="form-check-input" type="checkbox" id="sort-low-to-high" value="low-to-high">
+    <label class="form-check-label" for="sort-low-to-high">Price: Low to High</label>
+</div>
+<div class="form-check">
+    <input class="form-check-input" type="checkbox" id="sort-high-to-low" value="high-to-low">
+    <label class="form-check-label" for="sort-high-to-low">Price: High to Low</label>
+</div>
+<!-- Add more sorting options as needed -->
+
+            </div>
+            
+            <!-- Product Cards -->
+
+            <div class="col-md-10">
+                <%if(product.length>0){%>
+                <div class="row" id="ajaxfiltercall">
+                    <%if(product.length>0){
+
+                        for(i=0;i<product.length;i++){%>
+                    <div class="col-md-3  col-sm-6 mb-4" id="card-<%= i %>">
+                        <a href="/productdescription/<%=product[i]._id%>">
+                            <div class="card ">
+                            <div  class="cardimagediv">
+                                <%
+// Function to find an object with a specific key-value pair
+const findObjectByKeyValuePair = (array, key, value) => {
+  return array.find(obj => obj[key] === value);
+};
+
+// Example usage
+const keyToFind = 'category'; // Replace with the correct key
+const valueToFind = product[i].Type;
+
+const foundObject = findObjectByKeyValuePair(offer, keyToFind, valueToFind);
+
+if (foundObject) {
+  // Check if the discount should be applied
+  const discountPercentage = foundObject.discount;
+  if (discountPercentage > 0) {
+%>
+    <span class="discount-tag" style="font-weight: bold;"><%= discountPercentage %>% off</span>
+<%
+  }
+}
+%>
+
+
+                               
+                             <img src="/admin/uploads/<%=product[i].Images[0]%>" class="card-img-top cardimage" alt="Product 1">
+                            </div>
+                            <div class="card-body">
+                                <h5 class="card-title"><%=product[i].ProductName%></h5>
+                                <p class="card-text"><%=product[i].Brand%></p>
+                                <p class="card-text" style="font-weight: bold;">
+                                    ₹<%=product[i].OfferPrice%>
+                                    <del class="striked-price"> ₹<%=product[i].RealPrice%></del> 
+                                    <% var discount=(product[i].OfferPrice/product[i].RealPrice)*100
+                                    var a=parseInt(100-discount)%>
+                                    <span class="offer-price">(<%=a%>%)</span> 
+                                  
+                                </p>
+                                <%if(product[i].rating && product[i].rating!=0){%>
+                               
+                                <div class="rating">
+                                    <%for(var j=0;j<product[i].rating;j++){%>
+                                    <span class="filled-star">☆</span>
+                                    <%}%>
+                                </div>
+                           
+                        <%}%>
+                            </div>
+                        </div>
+                        </a>
+                    </div>
+                <%}
+            }%>
+
+                </div>
+            <%}else{%>
+                <h2 style="color: orange;">sorry,no result found</h2>
+                <%}%>
+            </div>
+        </div>
+    </div>
+    <script>
+        var data={}
+        data.Brand=[]
+        data.Type=[]
+        document.getElementById("sidebarselect").addEventListener('change', function (event) {
+            var selectedOPtion;
+        var deselectedOPtion;
+       
+    if (event.target.classList.contains('form-check-input1')) {
+        
+       
+        if (event.target.checked) {
+            selectedOPtion=event.target.value;
+            
+            data.Brand.push(selectedOPtion)
+            console.log(data)
+        } else {
+            
+            deselectedOPtion=event.target.value
+
+const index =data.Brand.indexOf(deselectedOPtion);
+if (index !== -1) {
+    data.Brand.splice(index, 1);
+}
+
+
+
+            console.log(data)
+            
+        }
+    } else if (event.target.id === 'type-filter') {
+        // The event target is the dropdown
+        selectedOPtion = event.target.value;
+        data.Type=selectedOPtion
+        console.log(data)
+    
+        // Handle the dropdown change
+    }else if(event.target.id === 'price-range-filter'){
+        selectedOPtion= event.target.value;
+        
+         
+    }else if(event.target.id === 'color-filter'){
+        selectedOPtion= event.target.value;
+        if(selectedOPtion=="all"){
+            delete data.Color;
+            console.log(data)
+        }else{
+        data.Color=selectedOPtion
+        console.log(data)
+        }
+        
+    }else if(event.target.id === 'size-filter'){
+        selectedOPtion= event.target.value;
+        data.Size=selectedOPtion
+        console.log(data)
+        
+    }else if(event.target.classList.contains('form-check-input2')){
+        if (event.target.checked) {
+            selectedOPtion=event.target.value;
+            
+            data.Type.push(selectedOPtion)
+            console.log(data)
+        } else {
+            
+            deselectedOPtion=event.target.value
+            const index =data.Type.indexOf(deselectedOPtion);
+if (index !== -1) {
+    data.Type.splice(index, 1);
+}
+
+
+
+            console.log(data)
+        }
+
+    }
+   /* if(selectedOPtion){
+console.log(selectedOPtion)
+    }
+if(deselectedOPtion){
+console.log(deselectedOPtion)
+}*/
+
+$.ajax({
+        method: "POST",
+        url: "/filter",
+        data:{
+          data
+    },
+       
+    success: function (product) {
+        // Handle the response from the backend here
+        var productHTML = ''; // Initialize an empty string to store the HTML
+
+        if (product.length > 0) {
+            for (var i = 0; i < product.length; i++) {
+                productHTML += `
+                    <div class="col-md-3 col-sm-6 mb-4" id="card-${i}">
+                        <a href="/productdescription/${product[i]._id}">
+                            <div class="card">
+                                <div class="cardimagediv">
+                                    <img src="/admin/uploads/${product[i].Images[0]}" class="card-img-top cardimage" alt="Product 1">
+                                </div>
+                                <div class="card-body">
+                                    <h5 class="card-title">${product[i].ProductName}</h5>
+                                    <p class="card-text">${product[i].Brand}</p>
+                                    <p class="card-text">
+                                        ₹${product[i].OfferPrice}
+                                        <del class="striked-price"> ₹${product[i].RealPrice}</del> 
+                                        ${(100 - (product[i].OfferPrice / product[i].RealPrice) * 100).toFixed(0)}%
+                                    </p>
+                                    <div class="rating">
+                                        <span class="filled-star">☆</span>
+                                        <span class="filled-star">☆</span>
+                                        <span class="filled-star">☆</span>
+                                        <span class="filled-star">☆</span>
+                                        <span class="filled-star">☆</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </div>`;
+            }
+        } else {
+            // Handle the case when there are no matching products
+            productHTML = '<p>No products match the selected filters.</p>';
+        }
+
+        // Update the HTML content of the #ajaxfiltercall element
+        document.getElementById("ajaxfiltercall").innerHTML = productHTML;
+    },
+    });
+});
+
+
+        </script>
+
+ 
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.5.0/dist/js/bootstrap.min.js"></script>
+    
+</body>
+</html>

@@ -1,0 +1,97 @@
+<%-include("./layout/head") %>
+<style>
+   #preview{
+    width:300px
+   }
+   #current{
+    width:400px
+   }
+   #current img{
+    width: 100%;
+   }
+   #previous{
+    width:400px
+   }
+   #previous img{
+    width: 100%;
+   }
+</style>
+</head>
+<body>
+      <!-- Navbar -->
+   <%-include("./partials/navbar") %>
+</nav>
+
+<%-include("./partials/sidebar") %>
+</div>
+   <!-- mainform -->
+   <div class="container mt-4  col-md-9">
+    
+        <div >
+            
+
+                <h1 class="mb-4">Upload Your Banner Image</h1>
+
+                <form action="/submitbanner" method="post" enctype="multipart/form-data" id="imageForm">
+                    <div class="form-group">
+                        <label for="imageUpload">Choose an image:</label>
+                        <input type="file" class="form-control-file" name="imageUpload" id="imageUpload" accept="image/*">
+                    </div>
+                    <div class="form-group">
+                        <input type="submit" class="btn btn-primary" value="Upload Image">
+                    </div>
+                </form>
+
+                <div id="preview" >
+                    <h2>Preview:</h2>
+                    <img id="imagePreview" src="#" alt="Preview" style="max-width: 100%; display: none;">
+                </div>
+
+            
+        </div>
+        <div id="current">
+            <h2 >current banner:</h2>
+            <img src="/admin/Uploads/<%=live.banner%>">
+            </div>
+            
+            <div id="previous">
+                <h2>previous banners:</h2>
+                <%if(data.length>0){
+                    for(var i=0;i<data.length;i++){%>
+                <img src="/admin/Uploads/<%=data[i].banner%>">
+                    <%}%>
+                <%}%>
+            </div>
+</div>
+
+
+
+   <script>
+       document.getElementById('imageUpload').addEventListener('change', function () {
+           const preview = document.getElementById('imagePreview');
+           const file = document.querySelector('input[type=file]').files[0];
+           const reader = new FileReader();
+
+           reader.addEventListener('load', function () {
+               preview.src = reader.result;
+               preview.style.display = 'block';
+           });
+
+           if (file) {
+               reader.readAsDataURL(file);
+           }
+       });
+
+       
+   </script>
+
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script>
+    
+</script>
+<script src="/admin/script/navbarandsidebar.js"></script>
+</body>
+</html>

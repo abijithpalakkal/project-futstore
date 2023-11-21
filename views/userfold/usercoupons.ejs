@@ -1,0 +1,142 @@
+
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Form</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Include Font Awesome CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link href="/user/css/sidebar.css" rel="stylesheet">
+
+
+<style>
+   body {
+            background-color: #f8f9fa;
+        }
+        .container {
+            margin-top: 50px;
+        }
+        .coupon-card {
+            margin-bottom: 20px;
+            border: 2px solid orange;
+            border-radius: 10px;
+            padding: 15px;
+            background-color: #ffffff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .coupon-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color:orange;
+        }
+        .coupon-details {
+            margin-top: 10px;
+            color: #555;
+        }
+        .coupon-actions {
+            margin-top: 15px;
+        }
+        .btn-details {
+            background-color: #007bff;
+            color: #fff;
+            margin-right: 10px;
+        }
+        .btn-delete {
+            background-color: #dc3545;
+            color: #fff;
+        }
+        .coupon-details p{
+            font-weight: bold;
+        }
+        #referralbox{
+            width: 100%;
+            height: 100px;
+            background-color: rgb(255, 227, 127);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .copy-icon {
+            font-size: 20px;
+            cursor: pointer;
+            margin-left: 5px;
+        }
+    
+</style>
+</head>
+<body>
+    <%-include("./partials/navbar2") %>
+</nav>
+
+
+
+    
+    <%-include("./partials/profilesidebar") %>
+   <!-- mainform -->
+<div class="container mt-2 col-md-9">
+
+    <div id="referralbox">
+        <div>
+            <p>Your referral link:
+                <a id="referralLink" href="http://localhost:3000/signup/<%=referral%>">
+                    http://localhost:3000/signup/<%=referral%>
+                </a>
+                <span class="copy-icon" onclick="copyToClipboard()">📋</span><span>(click to copy)</span>
+            </p>
+            <p style="text-align: center; color: rgb(255, 21, 0); font-weight: bold;">
+                <span class="star">&#9733;</span>share your referral link and Earn 150 rupees in your wallet
+                <span class="star">&#9733;</span>
+            </p>
+        </div>
+    </div>
+    <h2>Available Coupons:</h2>
+
+        <!-- Coupon Cards -->
+        <%if(mergedata.length>0){%>
+        <div class="row">
+            <%for(var i=0;i<mergedata.length;i++){%>
+            <div class="col-md-4">
+                <div class="card coupon-card">
+                    <div class="coupon-title"><%=mergedata[i].couponname%></div>
+                    <div class="coupon-details">
+                        <p  style="color: green;">Discount: <%=mergedata[i].discountpercentage%>%</p>
+                        <p>Code:<%=mergedata[i].couponcode%></p>
+                        <p>Expires on: <%=mergedata[i].expirydate%></p>
+                        <p >usage limit:<%=mergedata[i].numberofcoupons%></p>
+                    </div>
+                    
+                </div>
+            </div>
+        <%}%>
+        
+
+             <!-- Add more coupon cards as needed -->
+            </div>
+    <%}else{%>
+        <h2 style="color:orange">no coupons available</h2>
+    <%}%>
+</div>
+
+<script>
+     function copyToClipboard() {
+            const referralLink = document.getElementById('referralLink');
+            const textArea = document.createElement('textarea');
+            textArea.value = referralLink.href;
+            document.body.appendChild(textArea);
+            textArea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textArea);
+            alert('Link copied to clipboard!');
+        }
+</script>
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+        <script src="/user/script/navbar2.js"></script>
+ 
+</body>
+</html>

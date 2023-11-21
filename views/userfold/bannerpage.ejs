@@ -1,0 +1,70 @@
+<%-include("./layout/head")%>
+</head>
+<link href="/user/css/homepage2.css" rel="stylesheet">
+<style>
+
+</style>
+<body>
+ 
+<%-include("./partials/navbar2") %>
+</nav>
+<section>
+    <div class="banner">
+        <img src="/admin/Uploads/<%=banner1.banner%>" alt="">
+    </div>
+    <h3 style="text-align: center;margin: 0;background-color: rgb(255, 111, 0);margin-top: 10px;margin-bottom: 15px;">TRENDING</h3>
+    <div id="middle"> 
+        <%for(var i=0;i<5;i++){%>
+        <div class="imgdiv" style="cursor: pointer;">
+            <div>
+            <img src="/admin/uploads/<%=typedata[i].Images[0]%>">
+        </div>
+            <p style="font-weight: bold;"><%=typedata[i].Type%></p>
+          </div>
+       <% }%>
+    </div>
+   <DIV class="new-arrival">NEW ARRIVALS</DIV>
+   <div class="container">
+    <div class="row">
+
+        <!-- Card 1 -->
+        <%for(var i=0;i<data.length;i++){%>
+        <div class="col-md-4">
+            <div class="card" onclick="redirectToDetails('<%=data[i]._id%>')">
+                <div id="cardimg">
+                <img src="/admin/uploads/<%=data[i].Images[0]%>" alt="Product 1 Image">
+            </div>
+                <h2><%=data[i].ProductName%></h2>
+                <p style="font-weight: bold;"><%=data[i].Brand%></p>
+                <p class="offer-price"> ₹<%=data[i].OfferPrice%>/-</p>
+                <%if(data[i].rating){%>
+                <div class="star-rating">
+                   <% for(var j=0;j<data[i].rating;j++){%>
+                    &#9733;
+                    <%}%>
+                </div>
+                <%}%>
+            </div>
+        </div>
+        <%}%>
+        <!-- Card 2 -->
+       
+        <!-- Add more cards as needed -->
+
+    </div>
+</div>
+
+  </section>
+<script>
+    function redirectToDetails(id){
+       window.location.href="/productdescription/"+id
+    }
+</script>
+
+<!-- Include Bootstrap JS (jQuery and Popper.js) -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+</body>
+</html>

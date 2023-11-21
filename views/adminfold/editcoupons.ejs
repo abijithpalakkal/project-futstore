@@ -1,0 +1,142 @@
+<%-include("./layout/head") %>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<style>
+    body {
+      background-color: #f8f9fa;
+    }
+    .container {
+      margin-top: 50px;
+    }
+    
+   
+</style>
+</head>
+<body>
+      <!-- Navbar -->
+   <%-include("./partials/navbar") %>
+</nav>
+
+<%-include("./partials/sidebar") %>
+</div>
+   <!-- mainform -->
+   <div class="container mt-4  col-md-9">
+    <h2>Edit/View Coupon </h2>
+    <form id="couponForm" action="/editcoupon/<%=data._id%>" method="post">
+      <div class="form-group">
+        <label for="couponName">Coupon Name:</label>
+        <input type="text" class="form-control" id="couponName" name="couponname" required value="<%=data.couponname%>">
+      </div>
+      <div class="form-group">
+        <label for="couponCode">Coupon Code (at least one capital letter and numbers):</label>
+        <input type="text" pattern="^(?=.*[A-Z])(?=.*\d)[A-Z\d]*$" class="form-control" id="couponCode"  name="couponcode" required value="<%=data.couponcode%>">
+      </div>
+      <div class="form-group">
+        <label for="minAmount">Minimum Amount (must be a number):</label>
+        <input type="number" class="form-control" id="minAmount" name="minimimumamount" required value="<%=data.minimimumamount%>">
+      </div>
+      <div class="form-group">
+        <label for="expiryDate">Expiry Date:</label>
+        <input type="date" class="form-control" id="expiryDate" name="expirydate" required value="<%=data.expirydate%>">
+      </div>
+      <div class="form-group">
+        <label for="numCoupons">Number of Coupons (must be a number):</label>
+        <input type="number" class="form-control" id="numCoupons" name="numberofcoupons" required value="<%=data.numberofcoupons%>">
+      </div>
+      <div class="form-group" id="forclick">
+        <label for="couponType">Coupon Type:</label>
+<select class="form-control" id="couponType" name="coupontype" required>
+    <option value="public" <% if (data.coupontype === 'public') { %>selected<% } %>>Public</option>
+    <option value="private" <% if (data.coupontype === 'private') { %>selected<% } %>>Private</option>
+    <option value="welcome" <% if (data.coupontype === 'welcome') { %>selected<% } %>>Welcome Coupon</option>
+</select>
+
+      </div>
+      <div class="form-group">
+        <label for="discountAmount">Discount Percentage (must be a number and not exceed 99):</label>
+        <input type="number" class="form-control" id="discountAmount" name="discountpercentage" required max="99" value="<%=data.discountpercentage%>">
+      </div>
+      <div id="privateCouponInput" class="form-group" style="display: none;">
+        <label for="orderAmount">Order Amount for Private Coupon (must be a number):</label>
+        <input type="number" class="form-control" id="orderAmount" name="privatecouponamount" value="<%=data.privatecouponamount%>">
+      </div>
+      <button type="submit" class="btn btn-primary" onclick="validateAndSubmit()">edit Coupon</button>
+    </form>
+</div>
+<script>
+    
+function validateAndSubmit() {
+      // Validation logic here
+      var couponName = document.getElementById('couponName').value;
+      var couponCode = document.getElementById('couponCode').value;
+      var minAmount = document.getElementById('minAmount').value;
+      var expiryDate = document.getElementById('expiryDate').value;
+      var numCoupons = document.getElementById('numCoupons').value;
+      var couponType = document.getElementById('couponType').value;
+      var discountAmount = document.getElementById('discountAmount').value;
+      var orderAmount = document.getElementById('orderAmount').value;
+
+      if (
+        !couponName || !couponCode || !minAmount || !expiryDate ||
+        !numCoupons || !couponType || !discountAmount 
+      ) {
+        alert('All fields are required.');
+        return;
+      }
+      if (couponType === 'private' && !orderAmount) {
+    alert('Order Amount is required for private coupons.');
+    return;
+  }
+
+
+      var couponCode = document.getElementById('couponCode').value;
+      if (!/^(?=.*[A-Z])(?=.*\d)[A-Z\d]*$/.test(couponCode)) {
+        alert('Coupon Code must contain at least one capital letter and numbers.');
+        return;
+      }
+
+      var minAmount = document.getElementById('minAmount').value;
+      if (isNaN(minAmount)) {
+        alert('Minimum Amount must be a number.');
+        return;
+      }
+
+      var numCoupons = document.getElementById('numCoupons').value;
+      if (isNaN(numCoupons)) {
+        alert('Number of Coupons must be a number.');
+        return;
+      }
+
+      var discountAmount = document.getElementById('discountAmount').value;
+      if (isNaN(discountAmount) || discountAmount > 99) {
+        alert('Discount Amount must be a number and not exceed 99.');
+        return;
+      }
+
+      var orderAmount = document.getElementById('orderAmount').value;
+      if (document.getElementById('couponType').value === 'private' && isNaN(orderAmount)) {
+        alert('Order Amount for Private Coupon must be a number.');
+        return;
+      }
+
+      // If all validations pass, submit the form
+      document.getElementById('couponForm').submit();
+    }
+    
+    document.getElementById('couponType').addEventListener('click', function() {
+      var privateCouponInput = document.getElementById('privateCouponInput');
+      if (this.value === 'private' ) {
+        privateCouponInput.style.display = 'block';
+      } else {
+        privateCouponInput.style.display = 'none';
+      }
+    });
+   if(document.getElementById('couponType').value=="private"){
+    privateCouponInput.style.display = 'block';
+   }
+</script>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="/admin/script/navbarandsidebar.js"></script>
+</body>
+</html>

@@ -1,0 +1,214 @@
+
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Form</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Include Font Awesome CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link href="/user/css/sidebar.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+
+<style>
+  #aforaddaddress{
+  text-decoration: none !important;
+  color: #333 !important;
+}
+
+    .orange-btn {
+        background-color: #f5450d;
+        border-color: #f5450d;
+    }
+    
+
+.shippingAddresses{
+      color: orange;
+}
+.addaddress{
+    color: orange;
+    cursor: pointer;
+}
+.cardo-body{
+    border: 1px solid #ccc;
+            padding: 10px;
+            border-radius: 15px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+}
+.btno{
+   background-color: rgb(241, 141, 27);
+}
+.image-column {
+        border: 2px dashed #ccc;
+        padding: 20px;
+        min-height: 200px;
+    }
+   .image {
+        max-width: 100%;
+        max-height: 150px;
+        margin: 10px 0;
+    }
+    .card-bodyo{
+        display: flex;
+        
+    }
+    .forspace{
+        width: 20px;
+    }
+    .maindiv{
+        display: flex;
+        justify-content: space-between;
+    }
+    #imagecontain{
+        width:150px
+    }
+    #imagecontain img{
+        width: 100%;
+    }
+    .checked {
+      color: gold;
+    }
+    .star {
+      cursor: pointer;
+    }
+</style>
+</head>
+<body>
+    <%-include("./partials/navbar2") %>
+</nav>
+
+
+
+    
+    <%-include("./partials/profilesidebar") %>
+   <!-- mainform -->
+<div class="container mt-2 col-md-9">
+    <%for(var i=0;i<data.length;i++){%>
+    <div class="card-deck mt-3">
+
+        <!-- Example Review Card -->
+       
+        <div class="card">
+            <div class="maindiv">
+          <div class="card-bodyo">
+            <div id="imagecontain">
+                <img src="/admin/uploads/<%=data[i].productid.Images[0]%>" alt="">
+                <h6 style="text-align: center;"><%=data[i].productid.ProductName%></h6>
+            </div>
+            <div class="forspace">
+
+            </div>
+            <div>
+                <%if(data[i].reviews){%>
+            <p class="cardtext"><%=data[i].reviews%></p>
+                <%}%>
+            <div id="starRating1">
+                 <%for(var j=0;j<data[i].rating;j++){%>
+                    <span class="star1" data-rating="1" ><i class="fas fa-star" style="color: orange;"></i></span>
+                 <%}%>
+              
+                  </div>
+                  <%var formattedDate = data[i].date.toLocaleDateString('en-US', {
+                    month: 'long',
+                    day: 'numeric',
+                    year: 'numeric'
+                  });%>
+            <p class="text-muted">  Posted on: <%=formattedDate%></p>
+          </div>
+        </div>
+        <div style="display: flex;align-items: center;padding-right: 20px;">
+        <button type="submit" class="btn btn-primary" data-toggle="modal" data-target="#ratingModal<%=i%>">edit</button>
+    </div>
+    </div>
+        </div>
+        
+   
+        <!-- Add more review cards dynamically based on your data -->
+        
+        </div>
+
+
+        
+            <div class="modal fade" id="ratingModal<%=i%>" tabindex="-1" role="dialog" aria-labelledby="ratingModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                  <div class="modal-content">
+                    <form method="POST" action="/editreview/<%=data[i].productid._id%>">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="ratingModalLabel">Edit Review</h5>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div class="modal-body">
+                      <!-- Rating -->
+                      <div class="form-group">
+                        <label for="rating">Rating:</label>
+                        <div id="starRating<%=i%>">
+                          <span class="star" data-rating="1"><i class="fas fa-star"></i></span>
+                          <span class="star" data-rating="2"><i class="fas fa-star"></i></span>
+                          <span class="star" data-rating="3"><i class="fas fa-star"></i></span>
+                          <span class="star" data-rating="4"><i class="fas fa-star"></i></span>
+                          <span class="star" data-rating="5"><i class="fas fa-star"></i></span>
+                        </div>
+                        <input type="hidden" name="rating" id="rating<%=i%>"  required>
+                        <p id="reviewhandle" style="color: red;"></p>
+                      </div>
+                      
+                      <!-- Review Text -->
+                      <div class="form-group">
+                        <label for="review">Write a Review:</label>
+                        <textarea class="form-control" id="review" rows="3" name="reviews"></textarea>
+                      </div>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-dismiss="modal" id="closeButton">Close</button>
+                      <button type="submit" class="btn btn-primary" onclick="submitReview('<%=i%>')">Submit Review</button>
+                    </div>
+                </form>
+                  </div>
+                </div>
+                </div>
+
+                <%}%>
+
+
+
+        
+
+
+
+    
+  </div>
+<script>
+   for (var i = 0; i < "<%=data.length%>"; i++) {
+        (function(index) {
+            $('#starRating' + index + ' span').click(function() {
+                rating = $(this).data('rating');
+                $('#starRating' + index + ' span').removeClass('checked');
+                $(this).prevAll().addBack().addClass('checked');
+                $('#rating' + index).val(rating);
+            });
+        })(i);
+   }
+   function submitReview(i){
+    var selectedRating = $('#rating' + i).val();
+    if(!selectedRating){
+        alert("please give a rating .cilck on the star")
+    event.preventDefault(); // Prevent the default form submission
+   }
+}
+    
+   
+</script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="/user/script/navbar2.js"></script>
+ 
+</body>
+</html>

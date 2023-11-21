@@ -1,0 +1,167 @@
+<%-include("./layout/head") %>
+
+</head>
+<style>
+    .thead{
+    background-color:rgb(241, 206, 141)!important;
+}
+</style>
+<body>
+      <!-- Navbar -->
+   <%-include("./partials/navbar") %>
+</nav>
+
+<%-include("./partials/sidebar") %>
+</div>
+<div class="container mt-5 col-md-9">
+   <!-- mainform -->
+   <div class="container mt-5">
+    <!-- Filter and Download Section -->
+    <div class="row mb-3">
+        <div class="col-md-4">
+            <label for="startDate">Start Date:</label>
+            <input type="date" id="startDate" class="form-control">
+        </div>
+        <div class="col-md-4">
+            <label for="endDate">End Date:</label>
+            <input type="date" id="endDate" class="form-control">
+        </div>
+        <div class="col-md-2">
+        <button type="button" class="btn btn-danger" onclick="filterAndDownload()">Apply</button>
+        <a href="/salesreport"><p style="margin-top: 5px;color: green;" >remove all filters</p></a>
+    </div>
+        <div class="col-md-2">
+            <div style="display: flex;justify-content: right;">
+            <button type="button" id="downloadButton" class="btn btn-primary" onclick="as()">Download</button>
+        </div>
+        </div>
+    </div>
+
+    <!-- Order Table -->
+    <table class="table">
+        <thead class="thead">
+            <tr>
+                <th scope="col">Order ID</th>
+                <th scope="col">Order Date</th>
+                <th scope="col">Customer</th>
+                <th scope="col">Payment Method</th>
+                <th scope="col">Status</th>
+                <th scope="col">Amount</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Add your table rows with data here -->
+            <%if(data.length>0){
+                for(var i=0;i<data.length;i++){%>
+            <tr>
+                <th scope="row"><%=data[i]._id%></th>
+                <%const formattedDate = data[i].orderdate.toLocaleDateString('en-US'); // Adjust the locale as needed%>
+                <td><%=formattedDate%></td>
+             
+                <td><%=data[i].userid.Username%></td>
+                <td><%=data[i].method%></td>
+                <td><%=data[i].status%></td>
+                <td>₹ <%=data[i].total_price%></td>
+            </tr>
+        <%}%>
+        <%}%>
+            <!-- Add more rows as needed -->
+        </tbody>
+    </table>
+    <br>
+    <div style="display: flex; gap: 80px;">
+        <div style="width: 73.5%;"></div>
+        <h4>Total:</h4>
+        <h4 >₹<%=sum[0].total%></h4>
+    </div>
+    
+
+</div>
+
+       
+</div>
+
+
+
+
+   <script>
+    
+
+    async function as() {
+        try {
+            const htmlContent = document.querySelector(".table").outerHTML;
+
+
+        const response = await fetch('http://localhost:3000/generate-pdf', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ htmlContent }), // Wrap
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
+        const data = await response.blob();
+
+        // Create a download link and trigger click to download the PDF
+        const downloadLink = document.createElement('a');
+        downloadLink.href = URL.createObjectURL(data);
+        downloadLink.download = 'downloaded.pdf';
+        document.body.appendChild(downloadLink);
+        downloadLink.click();
+        document.body.removeChild(downloadLink);
+    } catch (error) {
+        console.error('Error:', error);
+    }
+}
+
+
+
+
+
+       function filterAndDownload() {
+            var startDate = document.getElementById('startDate').value;
+            var endDate = document.getElementById('endDate').value;
+
+            // Validate that start date and end date are not empty
+            if (!startDate || !endDate) {
+                alert('Please select both start and end dates.');
+                return;
+            }
+
+            // Validate that start date is before or equal to end date
+            if (new Date(startDate) > new Date(endDate)) {
+                alert('End date must be equal to or after start date.');
+                return;
+            }
+
+            // Validate that both start date and end date are not future dates
+            var currentDate = new Date().toISOString().split('T')[0];
+            if (startDate > currentDate || endDate > currentDate) {
+                alert('Both start and end dates should not be future dates.');
+                return;
+            }
+
+            // Add your logic for filtering and downloading here
+            // For now, just log the selected dates
+            console.log('Start Date:', startDate);
+            console.log('End Date:', endDate);
+            window.location.href = "/salesreport?start=" + startDate + "&end=" + endDate;
+        }
+       
+   </script>
+
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    
+
+<script src="/admin/script/navbarandsidebar.js"></script>
+</body>
+</html>

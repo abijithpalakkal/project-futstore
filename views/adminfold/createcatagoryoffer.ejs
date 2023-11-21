@@ -1,0 +1,89 @@
+<%-include("./layout/head") %>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<style>
+   
+   
+</style>
+</head>
+<body>
+      <!-- Navbar -->
+   <%-include("./partials/navbar") %>
+</nav>
+
+<%-include("./partials/sidebar") %>
+</div>
+   <!-- mainform -->
+   <div class="container mt-4  col-md-9">
+    
+    <div class="container mt-5">
+        <h2>Create Category Offer</h2>
+        <%if(locals.message){%>
+        <h4 style="color: rgb(255, 102, 0);"><%=message%></h4>
+        <%}%>
+
+        <form id="categoryOfferForm" action="/submitoffer" method="POST" onsubmit="return createCategoryOffer()">
+            <div class="form-group">
+                <label for="category">Category:</label>
+                <select class="form-control" id="category" name="category">
+                    <% for (var i = 0; i < data.length; i++) { %>
+                        <optgroup label="<%= data[i].Category %>">
+                            <% for (var j = 0; j < data[i].type.length; j++) { %>
+                                <option value="<%= data[i].type[j] %>"><%= data[i].type[j] %></option>
+                            <% } %>
+                        </optgroup>
+                    <% } %>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="discount">Discount (%):</label>
+                <input type="number" class="form-control" id="discount" name="discount" min="1" max="99" required>
+                <small class="form-text text-muted">Enter a value between 1 and 99.</small>
+            </div>
+
+            <div class="form-group">
+                <label for="expiryDate">Expiry Date:</label>
+                <input type="date" class="form-control" id="expiryDate" name="expirydate" min="<?php echo date('Y-m-d'); ?>" required>
+                <small class="form-text text-muted">Select a future date.</small>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Create Offer</button>
+        </form>
+    </div>
+</div>
+<script>
+          function createCategoryOffer() {
+            // Get values from the form
+            var category = document.getElementById('category').value;
+            var discount = document.getElementById('discount').value;
+            var expiryDate = document.getElementById('expiryDate').value;
+
+            // Validate discount percentage
+            if (discount < 1 || discount > 99) {
+                alert('Discount should be between 1 and 99.');
+                return;
+            }
+
+            // Validate expiry date
+            var currentDate = new Date().toISOString().split('T')[0];
+            if (expiryDate <= currentDate) {
+                alert('Expiry date should be a future date.');
+                return;
+            }
+
+            // Perform further actions (e.g., send data to the server) based on the form values
+            console.log('Category:', category);
+            console.log('Discount:', discount + '%');
+            console.log('Expiry Date:', expiryDate);
+
+            // You can add logic here to send the data to the server for processing
+        }
+    </script>
+</script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="/admin/script/navbarandsidebar.js"></script>
+</body>
+</html>

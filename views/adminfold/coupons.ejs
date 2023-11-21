@@ -1,0 +1,79 @@
+<%-include("./layout/head") %>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<style>
+   .card {
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+   
+</style>
+</head>
+<body>
+      <!-- Navbar -->
+   <%-include("./partials/navbar") %>
+</nav>
+
+<%-include("./partials/sidebar") %>
+</div>
+   <!-- mainform -->
+   <div class="container mt-4  col-md-9">
+    <h2>Coupons</h2>
+    <div style="display: flex;justify-content: space-between;">
+        <div></div>
+    <a href="/addcoupons"><button class="btn btn-primary">Add Coupon</button></a>
+</div>
+
+
+    <!-- Coupon Modal -->
+   
+
+    <!-- Display Coupons -->
+    <div class="row mt-3">
+       <% if(data && data.length>0){%>
+            <%for(var i=0;i<data.length;i++){%>
+        <div class="col-md-4 mb-3">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title" style="color: orange;"><%=data[i].couponname%></h5>
+                    <p class="card-text">Coupon Code: <%=data[i].couponcode%></p>
+                    <p class="card-text">Coupon type: <%=data[i]. coupontype%></p>
+                    <p class="card-text">expiry Date: <%=data[i].expirydate%></p>
+                    <div style="display: flex;justify-content: space-around;">
+                   <a href="/editcoupons/<%=data[i]._id%>" ><button class="btn" style="background-color: orange;">View/Edit Details</button></a>
+                    <button class="btn" style="background-color: orange;" onclick="deletecoupon('<%=data[i]._id%>')">delete coupon</button>
+                </div>
+                </div>
+            </div>
+        </div>
+    <%}%>
+    <%}else{%>
+        <h2 style="color: orange;">no coupons available</h2>
+    <%}%>
+        
+        <!-- Add more coupon cards as needed -->
+    </div>
+
+</div>
+<script>
+  function deletecoupon(id){
+    swal({
+  title: "Are you sure?",
+  text: "are you sure you want delete the coupon",
+  icon: "warning",
+  buttons: true,
+  dangerMode: true,
+})
+.then((willDelete) => {
+  if (willDelete) {
+    window.location.href = "/deletecoupons/"+id
+  } 
+});
+  }
+</script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="/admin/script/navbarandsidebar.js"></script>
+</body>
+</html>

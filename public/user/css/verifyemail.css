@@ -1,0 +1,23 @@
+.navbar-brand img {
+    max-width: 170px; /* Adjust the max-width as needed */
+}
+.sign-in-link {
+    color: #007bff; /* Link color */
+    text-decoration: none; /* Remove underline */
+    font-weight: bold; /* Make the text bold if desired */
+    margin-right: 15px; /* Add some spacing between the brand and link */
+}
+.navibg{
+    background-color:rgb(248, 237, 237);
+}
+.brandlogo img{
+    width:100%
+}
+.maincontainer{
+    width:75%
+}
+@media (max-width: 967px) {
+    .brandlogo{
+        display:none; /* Display the element on small screens */
+    }
+}

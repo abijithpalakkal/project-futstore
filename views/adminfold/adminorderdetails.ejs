@@ -1,0 +1,117 @@
+<%-include("./layout/head") %>
+<style>
+    /* Custom CSS for the page */
+    body {
+        background-color: #fff; /* Set background color to white */
+    }
+
+    .order-details {
+        border: 1px solid #ddd;
+        border-radius: 10px;
+        padding: 20px;
+        margin-top: 20px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* Box shadow */
+    }
+
+    .product-image {
+        max-width: 100px; /* Adjust the maximum image width as needed */
+    }
+
+    .total {
+        font-weight: bold;
+    }
+
+    .shipping-address {
+        border: 1px solid #ddd;
+        border-radius: 10px;
+        padding: 20px;
+        margin-top: 20px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* Box shadow */
+    }
+
+    .cancel-btn {
+        background-color: #FF4500; /* Set the cancel button color to red */
+        color: white;
+        border: none;
+        padding: 5px 10px;
+        border-radius: 5px;
+        font-weight: bold;
+        float: right; /* Align the button to the right */
+        cursor: pointer;
+    }
+    .shipping-address{
+        width: 50%;
+    }
+</style>
+</head>
+<body>
+    <%-include("./partials/navbar") %>
+</nav>
+
+<%-include("./partials/sidebar") %>
+        </div>
+        <div class="container mt-5 col-md-10">
+            <div class="container mt-5">
+                <div class="order-details">
+                    <h2 class="text-center" style="color: #FF4500;">Order Details</h2>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Product</th>
+                                <th>Product Name</th>
+                                <th>Product ID</th>
+                                <th>Quantity</th>
+                                <th>Price</th>
+                                <th>Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                           <% for(var i=0;i<data.items.length;i++){%>
+                            <tr>
+                                <td>
+                                    <img src="/admin/uploads/<%=data.items[i].productid.Images[0]%>" class="product-image">
+                                </td>
+                                <td><%=data.items[i].productid.ProductName%></td>
+                                <td><%=data.items[i].productid._id%></td>
+                                <td><%=data.items[i].quantity%></td>
+                                <td><%=data.items[i].productid.OfferPrice%></td>
+                                <%const total=data.items[i].productid.OfferPrice*data.items[i].quantity%>
+                                <td><%= total %></td>
+                            </tr>
+                        
+                        <%}%>
+                            <!-- Repeat the product details row for each product -->
+                            
+                                
+                            <!-- Add more product rows as needed -->
+                        </tbody>
+                    </table>
+        
+                    <div class="total text-right mt-3">
+                        <p>Grand Total:<%=data.total_price%></p>
+                    </div>
+                    
+                </div>
+                  <%if(addressdata){%>
+                <div class="shipping-address">
+                    <h4>Shipping Address</h4>
+                    <p><%=addressdata.addresses[0].fullAddress%></p>
+                    <p>pin code:<%=addressdata.addresses[0].pincode%></p>
+                    <p>mobile no:<%=addressdata.addresses[0].mobile_no%></p>
+        
+                    <!-- Add more shipping address details as needed -->
+                </div>
+          <%}%>
+              
+            </div>
+        </div>
+
+        
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="/admin/script/navbarandsidebar.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+</body>
+</html>

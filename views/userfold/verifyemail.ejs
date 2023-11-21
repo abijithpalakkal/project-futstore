@@ -1,0 +1,33 @@
+<%-include("./layout/head")%>
+    <link href="/user/css/verifyemail.css" rel="stylesheet">
+</head>
+<body>
+    <%-include("./partials/navbar1") %>
+    </nav>
+    <section class="container-lg mt-5">
+        <div class="row">
+            <div class="col brandlogo">
+                <img class="my-5" src="/user/img/brand logo.png" alt="">
+            </div>
+            <div class="col  d-flex justify-content-center justify-content-center">
+                <div class="text-center shadow-lg maincontainer">
+                    <p>verify ur email Address</p>
+                    <p>enter the otp receive in your registered email id</p>
+                    <div class="d-flex justify-content-around">
+                        <p>verfication code:</p>
+                        <a href="/getotp">resend code</a>
+                    </div>
+                    <p style="color: red;font-weight: bold;"><%=locals.message%></p>
+                    <form action="/verifyotp" method="POST">
+                        <div class="mb-3">
+                            <label for="verificationCode" class="form-label "></label>
+                            <input type="text" class="form-control" id="verificationCode" name="verificationCode" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary mb-2">Verify me</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+</body>
+</html>

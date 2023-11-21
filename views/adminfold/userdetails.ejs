@@ -1,0 +1,50 @@
+<%-include("./layout/head") %>
+</head>
+<body>
+    <%-include("./partials/navbar") %>
+</nav>
+
+<%-include("./partials/sidebar") %>
+        </div>
+        <div class="container mt-5 col-md-9">
+            <h3 class="m-4" style="color: orange;">customers</h3>
+            <div class="container">
+                <table class="table table-bordered table-striped mt-4">
+                    <thead>
+                        <tr>
+                            <th>Customer Name</th>
+                            <th>Email</th>
+                            <th>Orders</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <%for(var i=0;i<data.length;i++){%>
+                        <tr>
+                            <td><%=data[i].Username%></td>
+                            <td><%=data[i].Email%></td>
+                            <td><%=orderss[i]%></td>
+                            <td><%if(data[i].status=="active"){%>
+                                <span class="badge badge-success"><%=data[i].status%></span>
+                            <%}else{%>
+                                <span class="badge badge-secondary"><%=data[i].status%></span></td>
+                            <%}%>
+                            <td>
+                                <a href="/enableuser/<%=data[i]._id%>"><button class="btn btn-primary">Enable</button></a>
+                                <a href="/disableuser/<%=data[i]._id%>"><button class="btn btn-danger">Disable</button></a>
+                            </td>
+                        </tr>
+                        <%}%>
+                        <!-- Add more customer rows here -->
+                    </tbody>
+                </table>
+            </div>
+        
+        </div>
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="/admin/script/navbarandsidebar.js"></script>
+</body>
+</html>

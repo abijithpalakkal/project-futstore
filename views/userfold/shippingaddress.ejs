@@ -1,0 +1,131 @@
+
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Form</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Include Font Awesome CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link href="/user/css/sidebar.css" rel="stylesheet">
+
+
+<style>
+  #aforaddaddress{
+  text-decoration: none !important;
+  color: #333 !important;
+}
+
+    .orange-btn {
+        background-color: #f5450d;
+        border-color: #f5450d;
+    }
+    
+
+.shippingAddresses{
+      color: orange;
+}
+.addaddress{
+    color: orange;
+    cursor: pointer;
+}
+.cardo-body{
+    border: 1px solid #ccc;
+            padding: 10px;
+            border-radius: 15px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+}
+.btno{
+   background-color: rgb(241, 141, 27);
+}
+.image-column {
+        border: 2px dashed #ccc;
+        padding: 20px;
+        min-height: 200px;
+    }
+   .image {
+        max-width: 100%;
+        max-height: 150px;
+        margin: 10px 0;
+    }
+    
+</style>
+</head>
+<body>
+    <%-include("./partials/navbar2") %>
+</nav>
+
+
+
+    
+    <%-include("./partials/profilesidebar") %>
+   <!-- mainform -->
+<div class="container mt-2 col-md-9">
+    <div class="container ">
+        <h1 class="shippingAddresses">shipping Addresses:</h1>
+       <%for(var i=0;i<data.length;i++){%>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="cardo mb-3">
+                    <div class="cardo-body">
+                        <h5 class="card-title">Address <%=i+1%>        <span class="badge badge-info"><%=data[i].address_label%></span></h5>
+                        <p class="card-text"><%=data[i].name%></p>
+                        <p class="card-text"><%=data[i].fullAddress%></p>
+                        <p class="card-text">Postal Code: <%=data[i].pincode%></p>
+                        <p class="card-text">Mobile Number: <%=data[i].mobile_no%></p>
+                        <a href="/editaddress/<%=i%>"><button class="btn btno ">Edit</button></a>
+                        <button class="btn btno" data-toggle="modal" data-target="#myModal" type="button" onclick="adressindexupdate('<%=i%>')">Remove</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <%}%>
+
+        
+       
+        <div class="modal fade " id="myModal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Modal Title</h5>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Are you sure you want to remove this address</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                       <a id="myAnchorTag"><button type="button" class="btn btn-primary">Remove</button></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- You can add more address boxes in separate rows with "Edit" and "Remove" buttons as needed -->
+        <a href="/addaddress" id="aforaddaddress"><h5 class="addaddress">+ Add New Address</h5></a>
+    </div>
+</div>
+
+<script>
+    
+   function adressindexupdate(a){
+  var anchor = document.getElementById("myAnchorTag");
+  anchor.setAttribute("href","/removeaddress/"+a);
+
+   }
+    
+
+  
+
+
+</script>
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+        <script src="/user/script/navbar2.js"></script>
+ 
+</body>
+</html>

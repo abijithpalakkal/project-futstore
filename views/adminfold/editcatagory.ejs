@@ -1,0 +1,74 @@
+<%-include("./layout/head") %>
+<style>
+    .orange-btn {
+        background-color: #f5450d;
+        border-color: #f5450d;
+    }
+   
+</style>
+</head>
+<body>
+      <!-- Navbar -->
+   <%-include("./partials/navbar") %>
+</nav>
+
+<%-include("./partials/sidebar") %>
+</div>
+   <!-- mainform -->
+   <div class="container mt-4  col-md-9">
+    <div class="row">
+        <div class="col-md-6">
+            <h2> Edit Category and Types</h2>
+            <form action="/editcatagory/<%=data._id%>" method="post" >
+                <div class="form-group">
+                    <label for="category">Category</label>
+                    <input type="text" class="form-control" id="category" name="Category" required value="<%=data.Category%>">
+                </div>
+               
+                 
+                <div class="form-group">
+                    <label for="type">Types</label>
+                    <%data.type.forEach((type, index) => { %>
+                    <div id="typeInputs">
+                        <div class="input-group mb-2">
+                            <input type="text" class="form-control" name="type" required value="<%=type%>">
+                            <div class="input-group-append">
+                                <button type="button" class="btn btn-outline-danger" onclick="removeTypeInput(this)">X</button>
+                            </div>
+                        </div>
+                    </div>
+                    <% }); %>
+                    <button type="button" class="btn btn-primary" onclick="addTypeInput()">Add Type</button>
+                </div>
+               
+                <button type="submit" class="btn btn-primary  orange-btn ">Edit Category</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script>
+    function addTypeInput() {
+        const typeInputs = document.getElementById("typeInputs");
+        const inputGroup = document.createElement("div");
+        inputGroup.className = "input-group mb-2";
+        inputGroup.innerHTML = `
+            <input type="text" class="form-control" name="type" required>
+            <div class="input-group-append">
+                <button type="button" class="btn btn-outline-danger" onclick="removeTypeInput(this)">X</button>
+            </div>
+        `;
+        typeInputs.appendChild(inputGroup);
+    }
+
+    function removeTypeInput(button) {
+        const inputGroup = button.closest(".input-group");
+        inputGroup.remove();
+    }
+</script>
+<script src="/admin/script/navbarandsidebar.js"></script>
+</body>
+</html>

@@ -1,0 +1,57 @@
+<%-include("./layout/head") %>
+</head>
+<body>
+    <%-include("./partials/navbar") %>
+</nav>
+
+<%-include("./partials/sidebar") %>
+        </div>
+        <div class="container mt-5 col-md-9">
+            <h1 class="m-4">Product Details</h1>
+    <div class="container">
+        <div class="mb-3">
+            <a href="/addproducts" class="btn btn-success">Add Product</a>
+        </div>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Product ID</th>
+                    <th>image</th>
+                    <th>Product Name</th>
+                    <th>Category</th>
+                    <th>Brand</th>
+                    <th>Stock/Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <%if(product.length){
+                    for(i=0;i<product.length;i++){%>
+                <tr>
+                    <td><%=product[i]._id%></td>
+                    <td style="width: 100px;"><img src="/admin/Uploads/<%=product[i].Images[1]%>" alt="" style="width: 100%;"></td>
+                    <td><%=product[i].ProductName%></td>
+                    <td><%=product[i].Catagory%></td>
+                    <td><%=product[i].Brand%></td>
+                    <td style="font-weight: bold;"><p>In Stock</p><p  <%if(product[i].status==" active "){%>style="color: green;"<%}else{%>style="color:red;"<%}%>><%=product[i].status%></p></td>
+                    <td>
+                       <a href="/editproduct/<%=product[i]._id%>"> <button class="btn btn-primary" >Edit</button></a>
+                       <%if(product[i].status==" active "){%>
+                        <a  href="/disableproduct/<%=product[i]._id%>"><button class="btn btn-danger">Disable</button></a>
+                       <%}else{%>
+                        <a  href="/enableproduct/<%=product[i]._id%>"><button class="btn btn-success">Enable</button></a>
+                        <%}%>
+                    </td>
+                </tr>
+            <%}}%>
+                <!-- Add more rows for additional product details -->
+            </tbody>
+        </table>
+    </div>
+        </div>
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="/admin/script/navbarandsidebar.js"></script>
+</body>
+</html>

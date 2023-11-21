@@ -1,0 +1,209 @@
+
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Form</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Include Font Awesome CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    
+
+
+<style>
+    .orange-btn {
+        background-color: #f5450d;
+        border-color: #f5450d;
+    }
+    .sidebar {
+    width: 25%;
+    background-color: #f8f8f8;
+    padding: 20px;
+}
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+}
+.sidebar ul li {
+    padding: 10px 0;
+}
+.sidebar ul li a {
+    text-decoration: none; /* Remove underlines from anchor links */
+    color: #7b7474; /* Default color for the links */
+}
+.sidebar ul li a.active {
+    color: #f5450d; /* Highlighted color for the active link */
+}
+.sidebar ul li i {
+    margin-right: 10px;
+}
+
+/* Responsive styles */
+@media (max-width: 767px) {
+    
+    .sidebar {
+        display: block; /* Show the sidebar when toggled */
+        width: 100%; /* Make the sidebar take up full width */
+display: block; /* Show the sidebar when toggled */
+    }
+}
+.profile{
+    background-color: #e86b11; 
+    height: 150px;
+    display: flex;
+    align-items: end;
+}
+.navibg{
+  background-color: rgb(248, 237, 237);
+}
+
+.shippingAddresses{
+      color: orange;
+}
+.addaddress{
+    color: orange;
+    cursor: pointer;
+}
+.cardo-body{
+    border: 1px solid #ccc;
+            padding: 10px;
+            border-radius: 15px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+}
+.btno{
+   background-color: rgb(241, 141, 27);
+}
+
+
+
+    .image-column {
+        border: 2px dashed #ccc;
+        padding: 20px;
+        min-height: 200px;
+    }
+    .image {
+        max-width: 100%;
+        max-height: 150px;
+        margin: 10px 0;
+    }
+    @media (min-width: 460px) {
+    #brandlogoof {
+        width: 200px;
+    }
+}
+</style>
+</head>
+<body>
+    <%-include("./partials/navbar2") %>
+</nav>
+
+
+<div class="container-fluid">
+    
+    <%-include("./partials/profilesidebar") %>
+   <!-- mainform -->
+<div class="container mt-2 col-md-9">
+    <div class="container mt-3">
+        <h1 style="color:#f5450d">Address Form</h1>
+        <form action="/addaddress" method="post">
+            <div class="form-group">
+                <label for="name">Name:</label>
+                <input type="text" class="form-control" id="name" name="name" placeholder="Enter name" required>
+            </div>
+            <div class="form-group">
+                <label for="addressName">address label</label>
+                <input type="text" class="form-control" id="address label" name="address_label" placeholder="Enter address label eg work,home" maxlength="10" required>
+            </div>
+            <div class="form-group">
+                <label for="state">State:</label>
+                <input type="text" class="form-control" id="state" name="state" placeholder="Enter state" required>
+            </div>
+            <div class="form-group">
+                <label for="city">City:</label>
+                <input type="text" class="form-control" id="city" name="city" placeholder="Enter city" required>
+            </div>
+            <div class="form-group">
+                <label for="country">Country:</label>
+                <input type="text" class="form-control" id="country" name="country" placeholder="Enter country" required>
+            </div>
+            <div class="form-group">
+                <label for="fullAddress">Full Address:<span style="font-size:10px;">(as per addaarcard)</span></label>
+                <textarea class="form-control" id="fullAddress" name="fullAddress" rows="5" placeholder="Enter full address" required></textarea>
+            </div>
+            <div class="form-group">
+                <label for="pincode">Pin Code:</label>
+                <input type="text" class="form-control" id="pincode" name="pincode" placeholder="Enter pin code" required>
+            </div>
+            <div class="form-group">
+                <label for="mobileNo">Mobile Number:</label>
+                <input type="tel" class="form-control" id="mobileNo" name="mobile_no" placeholder="Enter mobile number" required>
+            </div>
+            <button type="submit" class="btn btno">Submit</button>
+        </form>
+    </div>
+</div>
+
+<script>
+   document.addEventListener("DOMContentLoaded", function () {
+    const image1Input = document.getElementById("image1");
+    const image2Input = document.getElementById("image2");
+    const image3Input = document.getElementById("image3");
+    const selectedImages = document.getElementById("selectedImages");
+
+    // Event listeners for image inputs
+    image1Input.addEventListener("change", function () {
+        displaySelectedImage(image1Input.files[0]);
+    });
+    image2Input.addEventListener("change", function () {
+        displaySelectedImage(image2Input.files[0]);
+    });
+    image3Input.addEventListener("change", function () {
+        displaySelectedImage(image3Input.files[0]);
+    });
+
+    // Function to display a selected image
+    function displaySelectedImage(file) {
+        if (file) {
+            const image = new Image();
+            image.src = URL.createObjectURL(file);
+            image.alt = "Selected Image";
+            image.style.width = "100%"
+            selectedImages.appendChild(image);
+        }
+    }
+});
+
+
+</script>
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    
+        <script>
+            // Function to add a category
+           
+        
+            // Toggle sidebar on smaller screens
+document.querySelector('.navbar-toggler').addEventListener('click', function () {
+    const sidebar = document.getElementById('sidebar');
+    sidebar.classList.toggle('show');
+});
+
+// Highlight active sidebar link
+const sidebarLinks = document.querySelectorAll('.nav-link');
+sidebarLinks.forEach((link) => {
+    link.addEventListener('click', function () {
+        // Remove 'active' class from all links
+        sidebarLinks.forEach((l) => {
+            l.classList.remove('active');
+        });
+
+        // Add 'active' class to the clicked link
+        link.classList.add('active');
+    });
+});</script>
+</body>
+</html>

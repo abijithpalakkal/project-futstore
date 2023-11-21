@@ -1,0 +1,484 @@
+<%-include("./layout/head")%>
+</head>
+
+<link href="/user/css/productdescription.css" rel="stylesheet">
+<script src="https://unpkg.com/js-image-zoom@0.4.1/js-image-zoom.js" type="application/javascript"></script>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+
+ 
+
+<style>
+    .productimagesec2 img{
+        width:100%;
+        max-height: 100%;
+    }
+    .numbers-box {
+            width: 1cm;
+            height: 1cm;
+            border: 1px solid #000;
+            text-align: center;
+            display: inline-block;
+            margin-right: 5px; /* Adjust the space between boxes */
+            background-color: rgb(241, 211, 199);
+            cursor: pointer;
+        }
+        
+    .star {
+      cursor: pointer;
+    }
+
+    .checked {
+      color: gold;
+    }
+   .btn1{
+    background-color: black;
+    color: white;
+   }
+   .ratings-chart {
+      display: flex;
+      flex-direction: column;
+      
+      margin-top: 20px;
+    }
+
+    .rating-bar {
+      width: 150px;
+      height: 8px; /* Adjusted thickness */
+      border-radius: 7.5px;
+      overflow: hidden;
+      background: #f0f0f0; /* Background color of the bar */
+      margin-bottom: 10px;
+      align-self: center;
+    }
+
+    .rating-fill {
+      height: 100%;
+      width: 0; /* Initial width is 0, it will be dynamically adjusted based on the rating percentage */
+      border-radius: 7.5px;
+      transition: width 0.5s ease-in-out; /* Smooth transition effect */
+    }
+
+    .rating-label {
+      font-weight: bold;
+      font-size: 16px;
+      margin-top: 10px;
+    }
+    .commonflex{
+        display: flex;
+    }
+    
+
+.rating1 > span {
+    
+    width: 1.1em;
+    color: gold; /* Golden color for stars */
+}
+
+.star1 {
+      color: gold;
+      cursor: pointer;
+    }
+</style>
+<body>
+    <%-include("./partials/navbar2") %>
+    </nav>
+    <section>
+        <div class="maindescription container-lg mt-4">
+            <div class="productimages">
+                <div class="productimagesec1" style="width: 35%;">
+                    <img src="/admin/uploads/<%=data.Images[3]%>" alt="" >
+                    <img src="/admin/uploads/<%=data.Images[2]%>" alt="">
+                    <img src="/admin/uploads/<%=data.Images[1]%>" alt="">
+
+                </div>
+                <div class="productimagesec2" style="max-height:100%;" >
+                    <div id="img-container">
+                    <img src="/admin/uploads/<%=data.Images[0]%>" alt="">
+                </div>
+                </div>
+
+            </div>
+            <div class="space">
+
+            </div>
+            <div style="min-width:50%;">
+               <h1>
+                <%=data.ProductName%>
+               </h1>
+               <p>color: <%=data.Color%></p>
+               <div>
+                <span class="star-icon">&#9733;</span> <!-- You can use a star character like "&#9733;" or an image -->
+                <span class="rating"><%=data.rating%>/5</span>
+            </div>
+            <div class="price-container">
+                <span class="offer-price" style="font-size: 30px;font-weight: bold;">₹ <%=data.OfferPrice%></span>
+                <span class="real-price">₹<%=data. RealPrice%></span>
+                <span class="offer-percentage">(20% off)</span>
+            </div>
+             <hr>
+             <div class="availablecolors">
+                <p>description:</p>
+                <p > <%=data. Description%></p>
+                <p>sizes available:</p>
+                <div id="boxcontainer">
+                <%for(i=0;i<data.Size.length;i++){%>
+                <div class="numbers-box" id="number<%=i%>" onclick="btntestchg()"><%=data.Size[i]%></div>
+               <% }%>
+            </div>
+             </div>
+             <hr>
+             <div class="quantityandbtn">
+               <div class="quantity-selector">
+                <button class="quantity-button" onclick="decrementQuantity()">-</button>
+                <input type="number" id="quantity" class="quantity-input" value="1" min="1">
+                <button class="quantity-button" onclick="incrementQuantity()">+</button>
+               </div>
+               <div class="btn-group" role="group" aria-label="Add to Cart and Add to Wishlist">
+                <button type="button" class="btn btn-warning mx-2" onclick="addToCart()" id="addedtocart"  >Add to Cart</button>
+                <button type="button" class="btn btn-warning mx-2" onclick="addTowishlist()" id="addedtowishlist">Add to Wishlist</button>
+               </div>
+            </div>
+        </div>
+    </section>
+    <div class="productdescription container-lg mt-5">
+        <div>
+
+        </div>
+        <div>
+           <h5>Product specifications</h5>
+        </div>
+        <div class="">
+          <%if(btnneed=="needed"){%>
+            <button type="button" class="specbtn btn-sm btn btn1" data-toggle="modal" data-target="#ratingModal"> write a Review</button>
+          <%}%>
+        </div>
+    </div>
+     <div class="container-lg">
+        <%if(data.Specvalue && data.Specvalue.length>0){
+    for(var i=0;i<data.Specvalue.length;i++){%>
+        <h3 ><span><%=data.Speckey[i]%></span><span>  :  </span><span><%=data.Specvalue[i]%></span></h3>
+    <%}%>
+<%}else{%>
+        <p>no specifivation given by the seller</p>
+    <%}%>
+    
+</div>
+
+
+
+
+<div class="modal fade" id="ratingModal" tabindex="-1" role="dialog" aria-labelledby="ratingModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="ratingModalLabel">Leave a Review</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <!-- Rating -->
+        <div class="form-group">
+          <label for="rating">Rating:</label>
+          <div id="starRating">
+            <span class="star" data-rating="1"><i class="fas fa-star"></i></span>
+            <span class="star" data-rating="2"><i class="fas fa-star"></i></span>
+            <span class="star" data-rating="3"><i class="fas fa-star"></i></span>
+            <span class="star" data-rating="4"><i class="fas fa-star"></i></span>
+            <span class="star" data-rating="5"><i class="fas fa-star"></i></span>
+          </div>
+          <input type="hidden" name="rating" id="rating" value="1" required>
+          <p id="reviewhandle" style="color: red;"></p>
+        </div>
+        
+        <!-- Review Text -->
+        <div class="form-group">
+          <label for="review">Write a Review:</label>
+          <textarea class="form-control" id="review" rows="3"></textarea>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" id="closeButton">Close</button>
+        
+        <button type="button" class="btn btn-primary" onclick="submitReview()">Submit Review</button>
+      </div>
+    </div>
+  </div>
+  
+</div>
+
+
+<div class="container-lg mt-5 rating">
+  <h2 class="mb-4">Rating:</h2>
+
+  <!-- Display ratings section -->
+  <div class="ratings-chart">
+    <!-- Rating bar for 5 stars -->
+    <div class="commonflex">
+      <h5>5 <span class="star" data-rating="1"><span class="star-icon">&#9733;</span> </span></h5>
+      <div class="rating-bar">
+        <div class="rating-fill" id="chg1" style="width: 60%;background-color: orange;"></div>>
+      </div><span><%=rate['5']%></span>
+    </div>
+
+    <!-- Rating bar for 4 stars -->
+    <div class="commonflex">
+      <h5>4 <span class="star" data-rating="1"><span class="star-icon">&#9733;</span> </span></h5>
+      <div class="rating-bar">
+        <div class="rating-fill" id="chg2" style="width: 60%;background-color: orange;"></div>
+      </div><span><%=rate['4']%></span>
+    </div>
+
+    <!-- Rating bar for 3 stars -->
+    <div class="commonflex">
+      <h5>3 <span class="star" data-rating="1"><span class="star-icon">&#9733;</span> </span></h5>
+      <div class="rating-bar">
+        <div class="rating-fill" id="chg3" style="width: 40%; color: orange;background-color: orange;"></div>
+      </div><span><%=rate['3']%></span>
+    </div>
+
+    <!-- Rating bar for 2 stars -->
+    <div class="commonflex">
+      <h5>2 <span class="star" data-rating="1"><span class="star-icon">&#9733;</span> </span></h5>
+      <div class="rating-bar">
+        <div class="rating-fill" id="chg4" style="width: 20%;background-color: orange;"></div>
+      </div><span><%=rate['2']%></span>
+    </div>
+
+    <!-- Rating bar for 1 star -->
+    <div class="commonflex">
+      <h5>1 <span class="star" data-rating="1"><span class="star-icon">&#9733;</span> </span></h5>
+      <div class="rating-bar">
+        <div class="rating-fill" id="chg5" style="width: 10%;background-color: orange;"></div>
+      </div><span><%=rate['1']%></span>
+    </div>
+  </div>
+    
+    <h2 class="mb-4">Product Reviews:</h2>
+
+  <!-- Display reviews in a card deck -->
+  <div class="card-deck">
+
+<!-- Example Review Card -->
+<%if(check.length>0){%>
+<div class="card">
+  <%for(var i=0;i<check.length;i++){%>
+  <div class="card-body">
+    <h5 class="card-title"><%=check[i].userid.Username%></h5>
+    <p class="card-text"><%=check[i].reviews%></p>
+    <div id="starRating1">
+      <%for(var j=0;j<check[i].rating;j++){%>
+            <span class="star1" data-rating="1" ><i class="fas fa-star"></i></span>
+            
+      <%}%>
+          </div>
+          <%var formattedDate = check[i].date.toLocaleDateString('en-US', {
+  month: 'long',
+  day: 'numeric',
+  year: 'numeric'
+});%>
+    <p class="card-text text-muted">  Posted on: <%=formattedDate%></p>
+  </div>
+<%}%>
+</div>
+<%}%>
+
+<!-- Add more review cards dynamically based on your data -->
+
+</div>
+
+
+    </div>
+
+
+    <script>
+      document.getElementById('chg1').style.width ="<%=percentageRate['5']%>";
+      document.getElementById('chg2').style.width ="<%=percentageRate['4']%>";
+      document.getElementById('chg3').style.width ="<%=percentageRate['3']%>";
+      document.getElementById('chg4').style.width ="<%=percentageRate['2']%>";
+      document.getElementById('chg5').style.width ="<%=percentageRate['1']%>";
+
+        var rating=0;
+
+        $('#starRating span').click(function() {
+     rating = $(this).data('rating');
+    $('#starRating span').removeClass('checked');
+    $(this).prevAll().addBack().addClass('checked');
+    $('#rating').val(rating);
+  });
+
+  function submitReview() {
+    console.log("Submit Review button clicked");
+    // You can add logic here to handle the submitted review, e.g., send it to the server.
+    if($('#review').val()!=="") {
+      var reviewText = $('#review').val()
+    }
+    if(rating==0){
+      document.getElementById("reviewhandle").innerHTML="click on the star to give a rating"
+    }else{
+    console.log(rating)
+    console.log(reviewText)
+    $.ajax({
+        method: "POST",
+        url: "/addreview",
+        data:{
+        productid:"<%=data._id%>",
+        rating:rating,
+        reviews:reviewText
+    },
+       
+        success: function (response) {
+        if(response=="done"){
+          $('#closeButton').click();
+        }else{
+          console.log(response)
+          swal("u have already written a review .are u sure u want to edit it!", {
+  buttons: ["cancel", "edit"],
+})
+.then((result) => {
+  if (result) {
+    // 'Edit' button was clicked
+    // Implement your logic for handling the 'Edit' action here
+    $.ajax({
+        method: "POST",
+        url: "/editreviewfrompage",
+        })
+        
+        Swal.close();
+        $('#closeButton').click();
+        // Close all Bootstrap modals
+
+
+  } /*else {
+    // 'Cancel' button was clicked or modal was closed
+    // Implement your logic for handling the 'Cancel' action here
+    
+
+  }*/
+})
+
+
+
+
+
+
+
+        }
+        }
+    });
+    
+
+    }
+
+  }
+var options = {
+    width: 400,
+    zoomWidth:500,
+    offset: {vertical: 0, horizontal: 10}
+};
+new ImageZoom(document.getElementById("img-container"), options);
+
+/*if (window.innerWidth <= 768) {
+  // Remove the "id" attribute
+  const element = document.getElementById("img-container");
+  if (element) {
+    element.removeAttribute("id");
+  }
+}*/
+
+
+        function btntestchg(){
+            document.getElementById("addedtocart").innerHTML="Add to Cart"
+        }
+    
+    var container = document.getElementById("boxcontainer");
+    var previousClickedElement = null; // To keep track of the previously clicked element
+
+   var Size
+
+    container.addEventListener("click", function (event) {
+        if (event.target.classList.contains("numbers-box")) {
+            if (previousClickedElement) {
+                // Revert the background color of the previously clicked element to default
+                previousClickedElement.style.backgroundColor = "";
+            }
+
+            // Set the background color of the clicked element to red
+            event.target.style.backgroundColor = "orange";
+              Size=event.target.innerHTML
+            // Update the previously clicked element
+            previousClickedElement = event.target;
+        }
+    });
+
+
+    function addToCart(a) {
+    var a = Size;
+    $.ajax({
+        method: "POST",
+        url: "/addtocart",
+        data:{
+        size: a,
+        productid:"<%=data._id%>",
+        userid:"<%=name._id%>",
+        quantity:1 
+    },
+       
+        success: function (response) {
+            // Handle the response from the backend here
+        document.getElementById("addedtocart").innerHTML=response
+            console.log(response);
+        }
+    });
+}
+function addTowishlist() {
+    $.ajax({
+        method: "POST",
+        url: "/addtowishlist",
+        data:{
+        productid:"<%=data._id%>",
+        userid:"<%=name._id%>"
+    },
+       
+        success: function (response) {
+            // Handle the response from the backend here
+        document.getElementById("addedtowishlist").innerHTML=response
+
+        }
+    });
+}
+
+   
+
+
+
+                function incrementQuantity() {
+            const quantityInput = document.getElementById('quantity');
+            quantityInput.stepUp();
+        }
+
+        function decrementQuantity() {
+            const quantityInput = document.getElementById('quantity');
+            quantityInput.stepDown();
+        }
+
+    </script>
+    
+
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+</body>
+</html>

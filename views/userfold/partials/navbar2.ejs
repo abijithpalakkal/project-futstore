@@ -1,0 +1,33 @@
+<nav class="navbar navbar-expand-lg navbar-light  navibg">
+    <a class="navbar-brand " href="/productview"><img src="/user/img/navbar brand logo.png" alt="Brand Logo" id="brandlogoof" width="100"></a>
+
+    <!-- Replace the default toggle icon with a profile icon, "Hello," and a search icon -->
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <i class="fas fa-user"></i> Hello | <i class="fas fa-search"></i>
+    </button>
+
+    <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+        <form class="form-inline my-2 my-lg-0" action="/productview" method="get">
+            <input class="form-control mr-sm-2" type="search" name="searchTerm" placeholder="Search" aria-label="Search">
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+        </form>
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a class="nav-link" href="/cart"><i class="fas fa-shopping-cart"></i> Cart</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/wishlist"><i class="fas fa-heart"></i> Wishlist</a>
+            </li>
+            
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <i class="fas fa-user"></i>  john dow
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" href="/shippingaddress">Profile</a>
+                    <a class="dropdown-item" href="/logout">Logout</a>
+                </div>
+            </li>
+        </ul>
+       
+    </div>

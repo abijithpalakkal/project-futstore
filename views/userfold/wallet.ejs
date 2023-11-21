@@ -1,0 +1,107 @@
+
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Form</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Include Font Awesome CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link href="/user/css/sidebar.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+
+<style>
+    body {
+            background-color: #f8f9fa;
+        }
+        .container {
+            margin-top: 50px;
+        }
+        .balance {
+    text-align: left;
+    padding: 20px;
+    
+
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Adding box shadow */
+}
+
+        .transaction-history {
+            margin-top: 20px;
+        }
+</style>
+</head>
+<body>
+    <%-include("./partials/navbar2") %>
+</nav>
+
+
+
+    
+    <%-include("./partials/profilesidebar") %>
+   <!-- mainform -->
+<div class="container mt-2 col-md-9">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8">
+                <div class="balance">
+                    <h2>Your Balance</h2>
+                    <%if(wallet1==null){%>
+                        <h1 class="text-success">₹0.00</h1>
+                    <%}else{%>
+                    <h1 class="text-success">₹<%=wallet1.wallet%></h1>
+                    <%}%>
+                </div>
+                <div class="transaction-history">
+                    <h3>Wallet Transaction History</h3>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Description</th>
+                                <th>Amount</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <%for(var i=0;i<data.length;i++){%>
+                            <tr>
+                                <%
+                                
+const year = data[i].date.getFullYear();
+const month = (data[i].date.getMonth() + 1).toString().padStart(2, '0'); // Months are zero-based
+const day = data[i].date.getDate().toString().padStart(2, '0');
+
+const formattedDate = `${year}-${month}-${day}`;%>
+                                <td><%=formattedDate%></td>
+                                <td><%=data[i].description%></td>
+                                <%if(data[i].description=="credited"){%>
+                                <td class="text-success">+₹<%=data[i].amount%></td>
+                                <%}else{%>
+                                    <td class="text-danger">-₹<%=data[i].amount%></td>
+                                <%}%>
+                            </tr>
+                        <%}%>
+                            <!-- Add more rows as needed -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    
+  </div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="/user/script/navbar2.js"></script>
+ 
+</body>
+</html>

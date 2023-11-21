@@ -1,0 +1,133 @@
+<%-include("./layout/head") %>
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+<style>
+    .btndetails{
+        background-color: orange;
+    }
+    #pagination{
+    display: flex;
+    justify-content:end;
+}
+#next a{
+    background-color: #e86b11;
+    color: black;
+}
+#prev a{
+    background-color: #e86b11;
+    color: black;
+}
+#page-info span{
+    color: #f5450d;
+    font-weight: bold
+}
+
+</style>
+</head>
+<body>
+    <%-include("./partials/navbar") %>
+</nav>
+
+<%-include("./partials/sidebar") %>
+        </div>
+        <div class="container mt-5 col-md-10">
+            <div>
+                <h2>return requests</h2>
+                <table class="table table-bordered">
+                  <thead>
+                    <tr>
+                      <th>ID details</th>
+                      
+                      <th>Order Date</th>
+                      <th>Payment Method</th>
+                      <th>Return Reason</th>
+                      <th>Details</th>
+
+                      <th>decision taken</th>
+                      <th>Action</th>
+                    
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <!-- Sample data for demonstration purposes -->
+                    <%for(var i=0;i<data.length;i++){%>
+                    <tr>
+                      <td><p>orderid:<%=data[i].orderid.id%></p><p>userid:<%=data[i].userid%></p></td>
+                      <%const year =data[i].orderid.orderdate.getFullYear();
+                       const month = data[i].orderid.orderdate.getMonth() + 1; // Months are zero-based, so add 1
+                        const day = data[i].orderid.orderdate.getDate();
+                         const formattedDate = `${year}-${month}-${day}`;%>
+                      <td><%=formattedDate%></td>
+                      <td><%=data[i].orderid.method%></td>
+                      
+                      
+                      <td><%=data[i].reason%></td>
+                      <td><a href="/adminorderdetails/<%=data[i].orderid._id%>"><button type="button" class="btn btndetails">details</td></a></td>
+                        <td>
+                            <% if (data[i].orderid.status == "return requested") { %>
+                                <p style="color:red;">pending...</p>
+                            <% } else { %>
+                                <p style="color: green;">decided</p>
+                            <% } %>
+                        </td>
+                        
+                      <td>
+                        <div class="btn-group">
+                            <%if(data[i].orderid.status == "Return Rejected"){%>
+                                <p>return rejected</p>
+                            <%}else if(data[i].orderid.status == "Return Approved"){%>
+                            <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                               <%=data[i].orderid.status%>
+                            </button>
+                            <div class="dropdown-menu">
+                                <a class="dropdown-item" href="#" onclick="statuschange('Return Rejected','<%=data[i].orderid._id%>')">Return Rejected</a>
+                                <a class="dropdown-item" href="#" onclick="statuschange('Return Approved','<%=data[i].orderid._id%>')">Return Approved</a>
+                                <a class="dropdown-item" href="#" onclick="statuschange('product received','<%=data[i].orderid._id%>')">product received</a>
+                                
+                            </div>
+                        <%}else if(data[i].orderid.status == "product received"){%>
+                            <p>product received(refunded the amount to wallet)</p>
+                        <%}else{%>
+                            <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <%=data[i].orderid.status%>
+                             </button>
+                            <div class="dropdown-menu">
+                                <a class="dropdown-item" href="#" onclick="statuschange('Return Rejected','<%=data[i].orderid._id%>')">Return Rejected</a>
+                                <a class="dropdown-item" href="#" onclick="statuschange('Return Approved','<%=data[i].orderid._id%>')">Return Approved</a>
+                                <a class="dropdown-item" href="#" onclick="statuschange('product received','<%=data[i].orderid._id%>')">product received</a>
+                                
+                            </div>
+                        <%}%>
+                        </div>
+                        
+                      </td>
+                    </tr>
+                <%}%>
+                    <!-- Add more rows as needed -->
+                  </tbody>
+                </table>
+              </div>
+        </div>
+
+        <script>
+            function statuschange(status,id){
+                
+                $.ajax({
+        method:"POST",
+        url: "/returnstatuschange",
+        data:{statuschng:status,
+            orderid:id
+    },
+    success: function (response) {
+        window.location.href="/returnrequest"
+    }
+    })
+            }
+        </script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        
+       
+        <script src="/admin/script/navbarandsidebar.js"></script>
+        
+</body>
+</html>

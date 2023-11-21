@@ -1,0 +1,368 @@
+<%-include("./layout/head")%>
+</head>
+
+<link href="/user/css/cart.css" rel="stylesheet">
+
+<body>
+    <%-include("./partials/navbar2") %>
+</nav>
+<section class="sectionbox mt-4">
+<h1 style="color: orange;">Your Cart</h1>
+<div class="cart mt-4">
+    <div class="cartitemscol">
+       
+       <%if(data=="your cart is empty"){%>
+        <h1 style="color: orange;"> Is Empty</h1>
+        <%}
+        else if(data==null){%>
+            <h1 style="color: orange;"> Is Empty</h1>
+        <%}else{%>
+       <%for(var i=0;i<data.productid.length;i++){%>
+        <div class="cartitems mt-4" id="cartitem<%=i%>">
+          <div class="image">
+             <img src="/admin/uploads/<%=data.productid[i].Images[0]%>" alt="images">
+          </div>
+          <div class="cartcolspace">
+
+          </div>
+       <div class="details">
+           <div class="producthead">
+               <h4><%=data.productid[i].ProductName%></h4>
+               <i class="fas fa-trash-alt" onclick="removeitem('<%=i%>')"></i>
+        </div>
+        <div class="rating">
+            <span class="filled-star">☆</span>
+            <span class="filled-star">☆</span>
+            <span class="filled-star">☆</span>
+            <span class="filled-star">☆</span>
+            <span class="filled-star">☆</span>
+        </div>
+        <p>color:<%=data.productid[i].Color%></p>
+        <p style="font-weight: bold;">size:<%=data.size[i]%></p>
+        <div class="pricequantity">
+            <h5>₹<%=data.productid[i].OfferPrice%><del class="striked-price" style="color: rgb(164, 154, 154);"> ₹<%=data.productid[i].RealPrice%></del></h5>
+            <p id="stockstatus<%=i%>" style="color: red;"></p>
+            <div class="quantityandbtn">
+               
+                <div class="quantity-selector">
+                    <button class="quantity-button" onclick="decrementQuantity('quantity<%=i%>','<%=i%>')">-</button>
+                    <input type="number" id="quantity<%=i%>" class="quantity-input" value="<%=data.quantity[i]%>" min="1">
+                    <button class="quantity-button" onclick="incrementQuantity('quantity<%=i%>','<%=i%>')">+</button>
+                  </div>
+                
+             </div>
+        </div>
+    
+    </div>
+    </div>
+       <%}%>
+
+
+
+    
+
+
+
+  
+
+
+  
+
+
+
+</div>
+<div class="space">
+
+</div>
+<%  
+var subtotal=0
+var discount=0
+var offertotal=0
+var total=0
+for(var i=0;i<data.productid.length;i++){
+ subtotal=subtotal+(data.productid[i].RealPrice*data.quantity[i])
+ offertotal=offertotal+(data.productid[i].OfferPrice*data.quantity[i])
+}
+var a=((subtotal-offertotal)/subtotal)*100
+discount=Math.round(a)
+total=subtotal-(subtotal-offertotal)
+%>
+<div class="cartdetails">
+    <div class="cartdetailsbox">
+   <h4 style="color:  #f5450d;">order summary</h4>
+   <div class="subtotal">
+    <h6>subtotal</h6>
+    <h6 id="subtotal">₹<%=subtotal%></h6>
+   </div>
+   <div class="discount">
+    <h6 >discount</h6>
+    <h6 style="color: green;" id="discount">₹<%=subtotal-offertotal%>(<%=discount%>%)</h6>
+   </div>
+   <div id="hidden" style="display: flex;justify-content: space-between;">
+    <h6 id="hidden1">coupon discount</h6>
+    <h6 id="hidden2" style="color: green;"></h6>
+    </div>
+   <div class="deliveryfee">
+    <h6>delivery fee</h6>
+    <h6>₹5</h6>
+   </div>
+   <hr>
+   <div class="total">
+    <h6>total</h6>
+    <h6 id="total">  <%=total%></h6>
+   </div>
+   <div class="couponbtn">
+    <select id="couponDropdown" class="form-control">
+  <option value="selectacoupon" disabled hidden selected>click here to select coupon</option>
+  <% if (mergedata.length > 0) {
+    for (var i = 0; i < mergedata.length; i++) { %>
+      <option value="<%= mergedata[i]._id%>" style="color:green;font-weight: bold;"><%= mergedata[i].couponcode%></option>
+    <% }
+  } else { %>
+    <option value="nocoupon" disabled>No Coupons Available</option>
+  <% } %>
+</select>
+
+    <button type="button" class="btn  rounded-pill" id="applyButton" onclick="selectcoupon()">Apply</button>
+   </div>
+   <a href="/usercoupons"><p style="color: green; cursor: pointer;">*check available coupons</p></a>
+   <div class="checkoutbtn mt-2">
+   <button type="button" class="btn  rounded-pill" id="applyButton" onclick="checkoutvalidation()">go to checkout</button>
+</div>
+</div >
+</div>
+</div>
+</section>
+
+<%}%>
+
+ 
+<script>
+    document.getElementById("hidden").style.display = "none";
+    const n = document.getElementById("total").innerHTML
+    const a= n
+    
+    var responsedata
+
+
+
+
+function selectcoupon(){
+   
+    var select = document.getElementById("couponDropdown")
+
+    // Get the selected value
+    var selectedValue = select.value;
+    
+    $.ajax({
+        method:"POST",
+        url: "/selectcouponfromcarta",
+        data:{id:selectedValue
+    },
+       
+    success: async function (response) {
+        console.log(response)
+        responsedata=response
+        
+        const nw = document.getElementById("total").innerHTML
+    document.getElementById("hidden").style.display = "flex"; 
+    const b=(nw * response.discountpercentage) / 100
+    const realtotal = nw - b;
+    document.getElementById("hidden2").innerHTML = b;
+    document.getElementById("total").innerHTML = realtotal;
+        
+}
+
+    })
+
+
+}
+
+
+
+function checkoutvalidation(){
+
+if(document.getElementById('couponDropdown').value=="selectacoupon"){
+    console.log("hello")
+
+    window.location.href="/checkout"
+}else{
+     const coupon=document.getElementById('couponDropdown').value
+
+    $.ajax({
+        method:"POST",
+        url: "/selectcouponfromcart",
+        data:{id:coupon
+    },
+       
+        success:async function (response) {
+            console.log(response)
+            
+          if(response=="used"){
+            swal("coupon used more than its usage limit")
+          }else{
+            const l=document.getElementById('total').innerHTML
+           if(response.minimimumamount>l){
+            await swal("the minimum order amount to apply this coupons is "+response.minimimumamount)
+
+           }else{
+            window.location.href="/checkout1/"+response._id
+           }
+        }
+            
+        }
+    })
+}
+}
+
+
+
+
+function removeitem(i){
+    $.ajax({
+        method:"POST",
+        url: "/removecartitem",
+        data:{index:i
+    },
+       
+        success: function (response) {
+            const index=response
+            const elementId = "cartitem" + index
+                document.getElementById(elementId).remove()
+                window.location.href="/cart"
+            
+        }
+    })
+}
+
+
+
+
+
+
+
+   function incrementQuantity(inputId,i) {
+    
+
+
+    const quantityInput = document.getElementById(inputId);
+    
+    quantityInput.stepUp();
+    $.ajax({
+        method: "POST",
+        url: "/quantitychange",
+        data:{quantity:"inc",
+           productindex:i
+    },
+       
+        success: function (res) {
+            // Handle the response from the backend here
+        
+        
+            document.getElementById("stockstatus"+res.i).innerHTML=res.status
+            if(res.status=="stock out")
+            document.getElementById("stockstatus"+res.i).style.color = 'red';
+            else{
+                document.getElementById("stockstatus"+res.i).style.color = 'green';
+            }
+
+           
+var subtotal=0
+var discount=0
+var offertotal=0
+var total=0
+ for(var i=0;i<res.response.productid.length;i++){
+ subtotal=subtotal+(res.response.productid[i].RealPrice*res.response.quantity[i])
+ offertotal=offertotal+(res.response.productid[i].OfferPrice*res.response.quantity[i])
+}
+var a=((subtotal-offertotal)/subtotal)*100
+discount=Math.round(a)
+total=subtotal-(subtotal-offertotal)
+
+
+           document.getElementById("subtotal").innerHTML="₹"+subtotal
+           document.getElementById("discount").innerHTML="₹"+(subtotal-offertotal)+"("+discount+"%)"
+           document.getElementById("total").innerHTML="₹"+total
+
+
+          if(responsedata){
+
+           const c= total
+    document.getElementById("hidden").style.display = "flex"; 
+    const b=(c * responsedata.discountpercentage) / 100
+    const realtotal = c - b;
+    document.getElementById("hidden2").innerHTML = b;
+    document.getElementById("total").innerHTML = realtotal;
+          }
+        }
+    });
+
+  }
+
+  function decrementQuantity(inputId,i) {
+    const quantityInput = document.getElementById(inputId);
+    quantityInput.stepDown();
+    
+    $.ajax({
+        method: "POST",
+        url: "/quantitychange",
+        data:{quantity:"dec",
+        productindex:i
+    },
+       
+        success: function (res) {
+            // Handle the response from the backend here
+            
+            document.getElementById("stockstatus"+res.i).innerHTML=res.status
+            if(res.status=="stock out")
+            document.getElementById("stockstatus"+res.i).style.color = 'red';
+            else{
+                document.getElementById("stockstatus"+res.i).style.color = 'green';
+            }
+var subtotal=0
+var discount=0
+var offertotal=0
+var total=0
+ for(var i=0;i<res.response.productid.length;i++){
+ subtotal=subtotal+(res.response.productid[i].RealPrice*res.response.quantity[i])
+ offertotal=offertotal+(res.response.productid[i].OfferPrice*res.response.quantity[i])
+}
+var a=((subtotal-offertotal)/subtotal)*100
+discount=Math.round(a)
+total=subtotal-(subtotal-offertotal)
+
+
+           document.getElementById("subtotal").innerHTML="₹"+subtotal
+           document.getElementById("discount").innerHTML="₹"+(subtotal-offertotal)+"("+discount+"%)"
+           document.getElementById("total").innerHTML="₹"+total
+        if(responsedata){
+           const c= total
+    document.getElementById("hidden").style.display = "flex"; 
+    const b=(c * responsedata.discountpercentage) / 100
+    const realtotal = c - b;
+    document.getElementById("hidden2").innerHTML = b;
+    document.getElementById("total").innerHTML = realtotal;
+
+        }
+
+
+        }
+   
+
+    
+    });
+
+}    
+            
+
+
+
+</script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+</body>
+</html>

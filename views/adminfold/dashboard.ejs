@@ -1,0 +1,135 @@
+<%-include("./layout/head") %>
+  <!-- Include Chart.js -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<style>
+  #sales{
+  display: flex;
+  justify-content: space-between;
+  }
+</style>
+<body>
+    <%-include("./partials/navbar") %>
+</nav>
+<%-include("./partials/sidebar") %>
+</div>
+<div class="container mt-5 col-md-9">
+  <div id="sales">
+    <div>
+        <!-- Create a dropdown menu for chart options -->
+        <label for="chartType">Select Chart Period:</label>
+        <select id="chartType" onchange="chartOptionSelected()">
+          <option value="yearly">Yearly</option>
+          <option value="monthly">Monthly</option>
+          <option value="weekly">Weekly</option>
+          <option value="daily">Daily</option>
+        </select>
+      </div>
+      <div>
+        <a href="/salesreport"><button type="button" class="btn btn-warning">Sales Report</button></a>
+      </div>
+    </div>
+      
+  <!-- Create a canvas element for the chart -->
+  <canvas id="salesReportChart" width="300" height="125"></canvas>
+</div>
+  <script>
+   
+
+   document.addEventListener("DOMContentLoaded", function() {
+  $.ajax({
+    method: "POST",
+    url: "/chartchange",
+    data: {
+      period: document.getElementById("chartType").value
+    },
+    success: function(res) {
+      if (window.chart) {
+        window.chart.destroy();
+      }
+      const salesData = {
+        labels: res.idsArray,
+        datasets: [
+          {
+            label: 'Sales',
+            data: res.totalSalesArray,
+            borderColor: 'orange',
+            borderWidth: 2,
+            fill: true,
+            backgroundColor: 'rgba(255, 165, 0, 0.2)',
+          },
+        ],
+      };
+
+      const ctx = document.getElementById('salesReportChart').getContext('2d');
+
+      window.chart = new Chart(ctx, {
+        type: 'bar',
+        data: salesData,
+        options: {
+          scales: {
+            y: {
+              beginAtZero: true,
+            },
+          },
+        },
+      });
+    }
+  });
+});
+
+
+ function chartOptionSelected(){
+        console.log("hello")
+        
+        $.ajax({
+        method: "POST",
+        url: "/chartchange",
+        data:{
+           period:document.getElementById("chartType").value
+    },
+    success:function(res){
+        if (window.chart) {
+            window.chart.destroy();
+          }
+        const salesData = {
+        labels:res.idsArray,
+          datasets: [
+            {
+              label: 'Sales',
+              data: res.totalSalesArray, // Sales figures for each month
+          borderColor: 'orange', // Change line color to orange
+          borderWidth: 2,
+          fill: true, // Fill the area under the line
+          backgroundColor: 'rgba(255, 165, 0, 0.2)', // Set the shading color and opacity
+        },
+      ],
+    };
+
+    const ctx = document.getElementById('salesReportChart').getContext('2d');
+
+    // Create the chart
+    window.chart= new Chart(ctx, {
+      type: 'bar',
+      data: salesData,
+      options: {
+        scales: {
+          y: {
+            beginAtZero: true,
+          },
+        },
+      },
+    });
+    }
+})
+    }
+    // Sample sales data (replace this with your actual data)
+    
+
+  </script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="/admin/script/navbarandsidebar.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+</body>
+</html>

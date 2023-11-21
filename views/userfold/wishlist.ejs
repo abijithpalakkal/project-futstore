@@ -1,0 +1,203 @@
+<%-include("./layout/head")%>
+</head>
+
+<link href="/user/css/cart.css" rel="stylesheet">
+<style>
+    .numbers-box {
+            width: 1cm;
+            height: 1cm;
+            border: 1px solid #000;
+            text-align: center;
+            display: inline-block;
+            margin-right: 5px; /* Adjust the space between boxes */
+            background-color: rgb(241, 211, 199);
+            cursor: pointer;
+        }
+</style>
+<script>
+    var productslength=4;
+</script>
+<body onload="myFunction('<%=data.productid.length%>')">
+    <%-include("./partials/navbar2") %>
+</nav>
+<section class="sectionbox mt-4">
+<h1 style="color: orange;">Your Wishlist</h1>
+<%if(data.productid.length==0){%>
+    <h1 style="color: orange;">Is Empty</h1>
+<%}%>
+<div class="cart mt-4">
+    <div class="cartitemscol">
+       
+       
+       <%for(var i=0;i<data.productid.length;i++){%>
+        <div class="cartitems mt-4" id="cartitem<%=i%>" style="padding:10px;">
+          <div class="image">
+             <img src="/admin/uploads/<%=data.productid[i].Images[0]%>" alt="images">
+          </div>
+          <div class="cartcolspace">
+
+          </div>
+       <div class="details">
+           <div class="producthead">
+               <h4><%=data.productid[i].ProductName%></h4>
+               <i class="fas fa-trash-alt" onclick="removeitem('<%=data.productid[i]._id%>')"></i>
+        </div>
+        <div class="rating">
+            <span class="filled-star">☆</span>
+            <span class="filled-star">☆</span>
+            <span class="filled-star">☆</span>
+            <span class="filled-star">☆</span>
+            <span class="filled-star">☆</span>
+        </div>
+        <p>color:<%=data.productid[i].Color%></p>
+       
+        <div class="pricequantity">
+            <h5>₹<%=data.productid[i].OfferPrice%><del class="striked-price" style="color: rgb(164, 154, 154);"> ₹<%=data.productid[i].RealPrice%></del></h5>
+            <button type="button" class="btn btn-warning mx-2"  id="addedtocart"  data-toggle="modal" data-target="#myModal<%=i%>" onclick="makesizenull()">Add to Cart</button>
+            
+        </div>
+    
+    </div>
+    </div>
+       <%}%>
+
+
+
+    
+
+
+
+  
+
+
+  
+
+
+
+</div>
+ 
+
+
+</div>
+</section>
+
+<%for(var i=0;i<data.productid.length;i++){%>
+<div class="modal fade" id="myModal<%=i%>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel" style="color: orange;">select size for <%=data.productid[i].ProductName%></h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <h5 id="get<%=i%>" style="color: red;"></h5>
+            <div id="boxcontainer<%=i%>">
+                <%for(j=0;j<data.productid[i].Size.length;j++){%>
+                <div class="numbers-box" id="number<%=j%>" onclick="btntestchg()"><%=data.productid[i].Size[j]%></div>
+               <% }%>
+            </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn" style="background-color: orange;" onclick="addToCart('<%=data.productid[i]._id%>','<%=i%>')" id="adddismiss<%=i%>">Add to cart</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<%}%>
+
+
+ 
+<script>
+    
+var size
+
+    var productslength="<%=data.productid.length%>";
+    for(var i=0;i<productslength;i++){
+        
+const container = document.getElementById("boxcontainer"+i);
+    let previousClickedElement = null; // To keep track of the previously clicked element
+
+    container.addEventListener("click", function (event) {
+        
+        if (event.target.classList.contains("numbers-box")) {
+            if (previousClickedElement) {
+                // Revert the background color of the previously clicked element to default
+                previousClickedElement.style.backgroundColor = "";
+            }
+
+            // Set the background color of the clicked element to red
+            event.target.style.backgroundColor = "orange";
+              size=event.target.innerHTML
+            // Update the previously clicked element
+            previousClickedElement = event.target;
+        }
+    });
+}
+    
+function makesizenull(){
+    size=null
+}
+
+function removeitem(i){
+    $.ajax({
+        method:"POST",
+        url: "/removewhistlistitem",
+        data:{productid:i
+    },
+       
+        success: function (response) {
+            if(response){
+                window.location.href="/wishlist"
+            }
+            
+        }
+    })
+}
+
+
+
+
+function addToCart(c,i){
+    console.log(size)
+    var a=size
+    $.ajax({
+        method:"POST",
+        url: "/addtocartfromwhistlist",
+        data:{
+        size: a,
+        productid:c,
+        quantity:1 
+    },
+       
+        success: function (response) {
+            if(response=="added to cart"){
+                document.getElementById("get"+i).style.color = "green";
+                document.getElementById("get"+i).innerHTML=response
+                
+            
+            }else{
+                document.getElementById("get"+i).style.color = "red";
+                document.getElementById("get"+i).innerHTML=response
+            }
+            
+        }
+    })
+}
+
+   
+            
+
+
+
+</script>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+</body>
+</html>
