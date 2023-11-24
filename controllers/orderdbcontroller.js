@@ -9,7 +9,12 @@ const coupons = require("../config/mongodb/coupons.js");
 
 
 const postcancelorder=async(req,res)=>{
-   
+    const data=await orders.findOne({ _id:req.body.orderid})
+    if(data.method=="wallet"||data.method=="online payment"){
+      const date2=new Date()
+      await wallettransaction.create({userid:req.session.tempuserdetails._id,description:"credited",amount:data.total_price,date:date2})
+      await wallet.updateOne({userid:req.session.tempuserdetails._id},{$inc:{wallet:data.total_price}})
+    }
     await orders.updateOne({ _id:req.body.orderid},{ $set:{status:"cancelled"}})
     res.json("cancelled")
   }
