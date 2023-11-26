@@ -204,7 +204,8 @@ router.post("/selectcouponfromcart",async(req,res)=>{
 
 router.post("/selectcouponfromcarta",async(req,res)=>{
     const data=await coupons.findOne({_id:req.body.id})
-    res.json(data)
+    const cartdata=await cart.findOne({userid:req.session.tempuserdetails._id}).populate('productid')
+    res.json({data,cartdata})
 })
 
 

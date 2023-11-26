@@ -51,43 +51,43 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <%for(var i=0;i<data.length;i++){%>
+                        <%for(var i=0;i<data?.length;i++){%>
                         <tr>
-                            <td><%=data[i]._id%></td>
-                            <td><%=data[i].userid%></td>
-                            <td><%=data[i].orderdate%></td>
-                            <td><%=data[i].method%></td>
+                            <td><%=data[i]?._id%></td>
+                            <td><%=data[i]?.userid%></td>
+                            <td><%=data[i]?.orderdate%></td>
+                            <td><%=data[i]?.method%></td>
                             <td>Not Paid</td>
-                            <td><%=data[i].total_price%></td>
+                            <td><%=data[i]?.total_price%></td>
         
                             <td>
-                                <%if(data[i].status=="cancelled"){%>
+                                <%if(data[i]?.status=="cancelled"){%>
                                     <h5 style="color:red;">cancelled</h5>
-                                <%}else if(data[i].status=="return requested"){%>
+                                <%}else if(data[i]?.status=="return requested"){%>
 
                                     <h5 style="color:red;">return requested</h5><p style="font-size: 12px;">(check return request inbox for futher details)</p>
-                                <%}else if(data[i].status == "Return Rejected"){%>
+                                <%}else if(data[i]?.status == "Return Rejected"){%>
                                     <p>return rejected</p>
-                                <%}else if(data[i].status == "Return Approved"){%>
+                                <%}else if(data[i]?.status == "Return Approved"){%>
                                     <p>return approved</p>
-                                <%}else if(data[i].status == "product received"){%>
+                                <%}else if(data[i]?.status == "product received"){%>
                                     <p>product received(refunded the amount to wallet)</p>
                                 <%}else{%>
                                 <div class="btn-group">
                                     <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" id="statuschg<%=i%>"
-                                        <% if (data[i].status === "Shipped") { %>
+                                        <% if (data[i]?.status === "Shipped") { %>
                                             style="background-color: green; color: white;"
-                                        <% } else if (data[i].status === "order placed") { %>
+                                        <% } else if (data[i]?.status === "order placed") { %>
                                             style="background-color: lightblue; color: white;"
-                                        <% } else if (data[i].status === "processing") { %>
+                                        <% } else if (data[i]?.status === "processing") { %>
                                             style="background-color: yellow; color: black;"
-                                        <% } else if (data[i].status === "Packed") { %>
+                                        <% } else if (data[i]?.status === "Packed") { %>
                                             style="background-color: darkblue; color: white;"
-                                        <% } else if (data[i].status === "Delivered") { %>
+                                        <% } else if (data[i]?.status === "Delivered") { %>
                                             style="background-color: black; color: white;"
                                         <% } %>
                                     >
-                                        <%=data[i].status%>
+                                        <%=data[i]?.status%>
                                     </button>
                                     
                                     
@@ -102,7 +102,7 @@
                                 <%}%>
                             </td>
                             <td>
-                                <a href="/adminorderdetails/<%=data[i]._id%>"><button type="button" class="btn btndetails">details</td></a>
+                                <a href="/adminorderdetails/<%=data[i]?._id%>"><button type="button" class="btn btndetails">details</td></a>
                         </tr>
                     <%}%>
                         <!-- Add more order rows here -->

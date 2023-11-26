@@ -23,6 +23,7 @@ const coupons=require("../config/mongodb/coupons.js")
 require('dotenv').config();
 const pdf = require('html-pdf');
 const puppeteer = require('puppeteer');
+const cron = require('node-cron');
 
 
 const router=express.Router()
@@ -208,7 +209,21 @@ router.get("/o",(req,res)=>{
     res.render("./adminfold/offers.ejs")
 })
 
-    
+
+cron.schedule('*/5 * * * * *', async () => {
+    try {
+      // Find offers with expiry dates in the past
+      const expiredOffers = await offers.find({ expirydate: { $lt: new Date() } });
+  
+      // Delete the expired offers
+      for (const offer of expiredOffers) {
+        await offers.deleteOne({ _id: offer._id });
+        console.log(`Offer with ID ${offer._id} deleted.`);
+      }
+    } catch (error) {
+      console.error('Error in cron job:', error);
+    }
+  });
 
 
 /*api routes*/

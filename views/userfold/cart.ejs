@@ -139,15 +139,12 @@ total=subtotal-(subtotal-offertotal)
  
 <script>
     document.getElementById("hidden").style.display = "none";
-    const n = document.getElementById("total").innerHTML
-    const a= n
     
-    var responsedata
-
 
 
 
 function selectcoupon(){
+    if(document.getElementById("couponDropdown").value!=="selectacoupon"){
    
     var select = document.getElementById("couponDropdown")
 
@@ -160,21 +157,45 @@ function selectcoupon(){
         data:{id:selectedValue
     },
        
-    success: async function (response) {
-        console.log(response)
-        responsedata=response
+    success: async function (res) {
+        console.log(res)
+
+
+        var subtotal=0
+var discount=0
+var offertotal=0
+var total=0
+ for(var i=0;i<res.cartdata.productid.length;i++){
+ subtotal=subtotal+(res.cartdata.productid[i].RealPrice*res.cartdata.quantity[i])
+ offertotal=offertotal+(res.cartdata.productid[i].OfferPrice*res.cartdata.quantity[i])
+}
+var couponoffer=(((res.data.discountpercentage)/100)*offertotal)
+var a=((subtotal-offertotal)/subtotal)*100
+discount=Math.round(a)
+total=subtotal-(subtotal-offertotal)-couponoffer
+
+
+           document.getElementById("hidden").style.display = "flex"; 
+           document.getElementById("hidden2").innerHTML = couponoffer;
+           /*document.getElementById("discount").innerHTML="₹"+(subtotal-offertotal)+"("+discount+"%)"*/
+           document.getElementById("total").innerHTML="₹"+total
+
+
+
+
+        /*responsedata=res.response
         
         const nw = document.getElementById("total").innerHTML
     document.getElementById("hidden").style.display = "flex"; 
-    const b=(nw * response.discountpercentage) / 100
+    const b=(nw * res.response.discountpercentage) / 100
     const realtotal = nw - b;
     document.getElementById("hidden2").innerHTML = b;
-    document.getElementById("total").innerHTML = realtotal;
+    document.getElementById("total").innerHTML = realtotal;*/
         
 }
 
     })
-
+    }
 
 }
 
@@ -241,7 +262,7 @@ function removeitem(i){
 
 
 
-   function incrementQuantity(inputId,i) {
+function incrementQuantity(inputId,i) {
     
 
 
@@ -285,18 +306,13 @@ total=subtotal-(subtotal-offertotal)
            document.getElementById("total").innerHTML="₹"+total
 
 
-          if(responsedata){
-
-           const c= total
-    document.getElementById("hidden").style.display = "flex"; 
-    const b=(c * responsedata.discountpercentage) / 100
-    const realtotal = c - b;
-    document.getElementById("hidden2").innerHTML = b;
-    document.getElementById("total").innerHTML = realtotal;
-          }
+          
         }
     });
-
+    setTimeout(() => {
+  selectcoupon();
+}, 1000); 
+    
   }
 
   function decrementQuantity(inputId,i) {
@@ -335,15 +351,7 @@ total=subtotal-(subtotal-offertotal)
            document.getElementById("subtotal").innerHTML="₹"+subtotal
            document.getElementById("discount").innerHTML="₹"+(subtotal-offertotal)+"("+discount+"%)"
            document.getElementById("total").innerHTML="₹"+total
-        if(responsedata){
-           const c= total
-    document.getElementById("hidden").style.display = "flex"; 
-    const b=(c * responsedata.discountpercentage) / 100
-    const realtotal = c - b;
-    document.getElementById("hidden2").innerHTML = b;
-    document.getElementById("total").innerHTML = realtotal;
-
-        }
+        
 
 
         }
@@ -351,8 +359,12 @@ total=subtotal-(subtotal-offertotal)
 
     
     });
+    setTimeout(() => {
+  selectcoupon();
+}, 1000); 
 
 }    
+               
             
 
 

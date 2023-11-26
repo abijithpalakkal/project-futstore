@@ -97,6 +97,30 @@ display: block; /* Show the sidebar when toggled */
     color: #f5450d;
     font-weight: bold
 }
+
+/* Show card and hide table below 1352 pixels */
+@media (max-width: 1352px) {
+    #cardtohide {
+        display: block;
+    }
+
+    #tabletohide {
+        display: none;
+    }
+}
+
+/* Show table and hide card above 1352 pixels */
+@media (min-width: 1353px) {
+    #cardtohide {
+        display: none;
+    }
+
+    #tabletohide {
+        display: table; /* Assuming it's a table element */
+    }
+}
+
+
     </style>
 </head>
 <body>
@@ -108,7 +132,7 @@ display: block; /* Show the sidebar when toggled */
     <div class="container mt-5">
         <h1 class="mb-4 mainheading">Order History</h1>
         <div class="table-responsive">
-            <table class="table table-bordered">
+            <table class="table table-bordered" id="tabletohide">
                 <thead>
                     <tr class="tableheading">
                         <th>Order ID</th>
@@ -126,7 +150,7 @@ display: block; /* Show the sidebar when toggled */
                      
                      
                         
-                        <td><%= data[i]._id%></td>
+                        <td><%= data[i]?._id%></td>
                         <td>
                             <div class="d-flex align-items-center">
                                 <div class="product-images mr-3">
@@ -153,6 +177,43 @@ display: block; /* Show the sidebar when toggled */
                     <!-- Add more rows for each order as needed -->
                 </tbody>
             </table>
+
+            <div class="container" id="cardtohide">
+                <% for (var i = 0; i < data.length; i++) { %>
+                    <div class="card mb-3">
+                        <div class="card-header tableheading">
+                            <h5 class="mb-0">Order ID: <%= data[i]._id %></h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="d-flex align-items-center mb-3">
+                                <div class="product-images mr-3">
+                                    <img src="/admin/uploads/<%= data[i].items[0].productid.Images[0] %>" alt="Product">
+                                </div>
+                                <div>
+                                    <h6 class="card-title"><%= data[i].items[0].productid.ProductName %></h6>
+                                    <% const itemlength = data[i].items.length %>
+                                    <a href="/orderdetails/<%= data[i]._id %>" class="ml-2" data-toggle="tooltip" data-placement="bottom" title="Product 5, Product 6, ..." style="color: rgb(142, 132, 132);">+<% if (data[i].items.length != 1) { %><%= itemlength - 1 %> more...<% } else { %>more details...<% } %></a>
+                                </div>
+                            </div>
+                            <p class="card-text"><strong>Total:</strong> <%= data[i].total_price %></p>
+                            <p class="card-text"><strong>Status:</strong> <% if (data[i].status == "product received") { %>return successful (amount refunded to the wallet)<% } else { %><%= data[i].status %><% } %></p>
+                            <% const month = data[i].orderdate.toLocaleString('default', { month: 'long' }); // Get the full month name
+                       const day = data[i].orderdate.getDate(); // Get the day of the month
+                       const year = data[i].orderdate.getFullYear(); // Get the full year
+                       
+                       // Format as "Month Date, Year"
+                       const formattedDate = `${month} ${day}, ${year}`;
+                       %>
+                            <p class="card-text"><strong>Date:</strong> <%= formattedDate %></p>
+                            <p class="card-text"><strong>Payment Method:</strong> <%= data[i].method %></p>
+                        </div>
+                    </div>
+                <% } %>
+            </div>
+            
+          
+
+
         </div>
     </div>
     <div class="container mt-4" id="pagination">

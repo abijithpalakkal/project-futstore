@@ -66,16 +66,16 @@
                             </tr>
                         </thead>
                         <tbody>
-                           <% for(var i=0;i<data.items.length;i++){%>
+                           <% for(var i=0;i<data?.items.length;i++){%>
                             <tr>
                                 <td>
-                                    <img src="/admin/uploads/<%=data.items[i].productid.Images[0]%>" class="product-image">
+                                    <img src="/admin/uploads/<%=data.items[i]?.productid.Images[0]%>" class="product-image">
                                 </td>
-                                <td><%=data.items[i].productid.ProductName%></td>
-                                <td><%=data.items[i].productid._id%></td>
-                                <td><%=data.items[i].quantity%></td>
-                                <td><%=data.items[i].productid.OfferPrice%></td>
-                                <%const total=data.items[i].productid.OfferPrice*data.items[i].quantity%>
+                                <td><%=data.items[i]?.productid.ProductName%></td>
+                                <td><%=data.items[i]?.productid._id%></td>
+                                <td><%=data.items[i]?.quantity%></td>
+                                <td><%=data.items[i]?.productid.OfferPrice%></td>
+                                <%const total=data.items[i]?.productid.OfferPrice*data.items[i]?.quantity%>
                                 <td><%= total %></td>
                             </tr>
                         

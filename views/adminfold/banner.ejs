@@ -51,14 +51,14 @@
         </div>
         <div id="current">
             <h2 >current banner:</h2>
-            <img src="/admin/Uploads/<%=live.banner%>">
+            <img src="/admin/Uploads/<%=live?.banner%>">
             </div>
             
             <div id="previous">
                 <h2>previous banners:</h2>
                 <%if(data.length>0){
                     for(var i=0;i<data.length;i++){%>
-                <img src="/admin/Uploads/<%=data[i].banner%>">
+                <img src="/admin/Uploads/<%=data[i]?.banner%>">
                     <%}%>
                 <%}%>
             </div>
