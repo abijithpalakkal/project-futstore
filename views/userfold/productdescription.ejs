@@ -94,14 +94,14 @@
         <div class="maindescription container-lg mt-4">
             <div class="productimages">
                 <div class="productimagesec1" style="width: 35%;">
-                    <img src="/admin/uploads/<%=data.Images[3]%>" alt="" >
-                    <img src="/admin/uploads/<%=data.Images[2]%>" alt="">
-                    <img src="/admin/uploads/<%=data.Images[1]%>" alt="">
+                    <img src="/admin/uploads/<%=data?.Images[3]%>" alt="" >
+                    <img src="/admin/uploads/<%=data?.Images[2]%>" alt="">
+                    <img src="/admin/uploads/<%=data?.Images[1]%>" alt="">
 
                 </div>
                 <div class="productimagesec2" style="max-height:100%;" >
                     <div id="img-container">
-                    <img src="/admin/uploads/<%=data.Images[0]%>" alt="">
+                    <img src="/admin/uploads/<%=data?.Images[0]%>" alt="">
                 </div>
                 </div>
 
@@ -111,26 +111,26 @@
             </div>
             <div style="min-width:50%;">
                <h1>
-                <%=data.ProductName%>
+                <%=data?.ProductName%>
                </h1>
-               <p>color: <%=data.Color%></p>
+               <p>color: <%=data?.Color%></p>
                <div>
                 <span class="star-icon">&#9733;</span> <!-- You can use a star character like "&#9733;" or an image -->
-                <span class="rating"><%=data.rating%>/5</span>
+                <span class="rating"><%=data?.rating%>/5</span>
             </div>
             <div class="price-container">
-                <span class="offer-price" style="font-size: 30px;font-weight: bold;">₹ <%=data.OfferPrice%></span>
-                <span class="real-price">₹<%=data. RealPrice%></span>
+                <span class="offer-price" style="font-size: 30px;font-weight: bold;">₹ <%=data?.OfferPrice%></span>
+                <span class="real-price">₹<%=data?. RealPrice%></span>
                 <span class="offer-percentage">(20% off)</span>
             </div>
              <hr>
              <div class="availablecolors">
                 <p>description:</p>
-                <p > <%=data. Description%></p>
+                <p > <%=data?. Description%></p>
                 <p>sizes available:</p>
                 <div id="boxcontainer">
                 <%for(i=0;i<data.Size.length;i++){%>
-                <div class="numbers-box" id="number<%=i%>" onclick="btntestchg()"><%=data.Size[i]%></div>
+                <div class="numbers-box" id="number<%=i%>" onclick="btntestchg()"><%=data?.Size[i]%></div>
                <% }%>
             </div>
              </div>
@@ -164,7 +164,7 @@
      <div class="container-lg">
         <%if(data.Specvalue && data.Specvalue.length>0){
     for(var i=0;i<data.Specvalue.length;i++){%>
-        <h3 ><span><%=data.Speckey[i]%></span><span>  :  </span><span><%=data.Specvalue[i]%></span></h3>
+        <h3 ><span><%=data?.Speckey[i]%></span><span>  :  </span><span><%=data.Specvalue[i]%></span></h3>
     <%}%>
 <%}else{%>
         <p>no specifivation given by the seller</p>
@@ -268,7 +268,7 @@
   <div class="card-deck">
 
 <!-- Example Review Card -->
-<%if(check.length>0){%>
+<%if(check?.length>0){%>
 <div class="card">
   <%for(var i=0;i<check.length;i++){%>
   <div class="card-body">

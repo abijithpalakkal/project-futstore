@@ -10,16 +10,16 @@
 </nav>
 <section>
     <div class="banner">
-        <img src="/admin/Uploads/<%=banner1.banner%>" alt="">
+        <img src="/admin/Uploads/<%=banner1?.banner%>" alt="">
     </div>
     <h3 style="text-align: center;margin: 0;background-color: rgb(255, 111, 0);margin-top: 10px;margin-bottom: 15px;">TRENDING</h3>
     <div id="middle"> 
         <%for(var i=0;i<5;i++){%>
         <div class="imgdiv" style="cursor: pointer;">
             <div>
-            <img src="/admin/uploads/<%=typedata[i].Images[0]%>">
+            <img src="/admin/uploads/<%=typedata[i]?.Images[0]%>">
         </div>
-            <p style="font-weight: bold;"><%=typedata[i].Type%></p>
+            <p style="font-weight: bold;"><%=typedata[i]?.Type%></p>
           </div>
        <% }%>
     </div>
@@ -30,14 +30,14 @@
         <!-- Card 1 -->
         <%for(var i=0;i<data.length;i++){%>
         <div class="col-md-4">
-            <div class="card" onclick="redirectToDetails('<%=data[i]._id%>')">
+            <div class="card" onclick="redirectToDetails('<%=data[i]?._id%>')">
                 <div id="cardimg">
-                <img src="/admin/uploads/<%=data[i].Images[0]%>" alt="Product 1 Image">
+                <img src="/admin/uploads/<%=data[i]?.Images[0]%>" alt="Product 1 Image">
             </div>
-                <h2><%=data[i].ProductName%></h2>
-                <p style="font-weight: bold;"><%=data[i].Brand%></p>
-                <p class="offer-price"> ₹<%=data[i].OfferPrice%>/-</p>
-                <%if(data[i].rating){%>
+                <h2><%=data[i]?.ProductName%></h2>
+                <p style="font-weight: bold;"><%=data[i]?.Brand%></p>
+                <p class="offer-price"> ₹<%=data[i]?.OfferPrice%>/-</p>
+                <%if(data[i]?.rating){%>
                 <div class="star-rating">
                    <% for(var j=0;j<data[i].rating;j++){%>
                     &#9733;

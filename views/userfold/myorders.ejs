@@ -145,7 +145,7 @@ display: block; /* Show the sidebar when toggled */
                 </thead>
                 <tbody>
                     <!-- Example order data (you'll load this dynamically using JavaScript) -->
-                    <%for(var i=0;i<data.length;i++){%>
+                    <%for(var i=0;i<data?.length;i++){%>
                     <tr>
                      
                      
@@ -154,24 +154,24 @@ display: block; /* Show the sidebar when toggled */
                         <td>
                             <div class="d-flex align-items-center">
                                 <div class="product-images mr-3">
-                                    <img src="/admin/uploads/<%=data[i].items[0].productid.Images[0]%>" alt="Product">
+                                    <img src="/admin/uploads/<%=data[i]?.items[0]?.productid?.Images[0]%>" alt="Product">
                                 </div>
-                                <%=data[i].items[0].productid.ProductName%>
-                              <%const itemlength=data[i].items.length%>
-                            <a href="/orderdetails/<%=data[i]._id%>" class="ml-2" data-toggle="tooltip" data-placement="bottom" title="Product 5, Product 6, ..." style="color: rgb(142, 132, 132);">+<%if(data[i].items.length!=1){%><%=itemlength-1%> more...<%}else{%>more details...<%}%></a>
+                                <%=data[i]?.items[0]?.productid.ProductName%>
+                              <%const itemlength=data[i]?.items.length%>
+                            <a href="/orderdetails/<%=data[i]?._id%>" class="ml-2" data-toggle="tooltip" data-placement="bottom" title="Product 5, Product 6, ..." style="color: rgb(142, 132, 132);">+<%if(data[i].items.length!=1){%><%=itemlength-1%> more...<%}else{%>more details...<%}%></a>
                         </div>
                         </td>
-                        <td><%=data[i].total_price%></td>
-                       <td class="status"><%if(data[i].status=="product received"){%><p>return successful(amount refunded to the wallet)</p><%}else{%><%=data[i].status%><%}%></td> 
+                        <td><%=data[i]?.total_price%></td>
+                       <td class="status"><%if(data[i]?.status=="product received"){%><p>return successful(amount refunded to the wallet)</p><%}else{%><%=data[i].status%><%}%></td> 
                        <% const month = data[i].orderdate.toLocaleString('default', { month: 'long' }); // Get the full month name
-                       const day = data[i].orderdate.getDate(); // Get the day of the month
-                       const year = data[i].orderdate.getFullYear(); // Get the full year
+                       const day = data[i]?.orderdate.getDate(); // Get the day of the month
+                       const year = data[i]?.orderdate.getFullYear(); // Get the full year
                        
                        // Format as "Month Date, Year"
                        const formattedDate = `${month} ${day}, ${year}`;
                        %>
                         <td><%=formattedDate%></td>
-                        <td><%=data[i].method%></td>
+                        <td><%=data[i]?.method%></td>
                     </tr>
                 <%}%>
                     <!-- Add more rows for each order as needed -->
@@ -179,7 +179,7 @@ display: block; /* Show the sidebar when toggled */
             </table>
 
             <div class="container" id="cardtohide">
-                <% for (var i = 0; i < data.length; i++) { %>
+                <% for (var i = 0; i < data?.length; i++) { %>
                     <div class="card mb-3">
                         <div class="card-header tableheading">
                             <h5 class="mb-0">Order ID: <%= data[i]._id %></h5>

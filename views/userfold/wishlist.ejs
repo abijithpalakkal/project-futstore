@@ -17,12 +17,12 @@
 <script>
     var productslength=4;
 </script>
-<body onload="myFunction('<%=data.productid.length%>')">
+<body onload="myFunction('<%=data?.productid?.length%>')">
     <%-include("./partials/navbar2") %>
 </nav>
 <section class="sectionbox mt-4">
 <h1 style="color: orange;">Your Wishlist</h1>
-<%if(data.productid.length==0){%>
+<%if(data?.productid?.length==0){%>
     <h1 style="color: orange;">Is Empty</h1>
 <%}%>
 <div class="cart mt-4">
@@ -32,15 +32,15 @@
        <%for(var i=0;i<data.productid.length;i++){%>
         <div class="cartitems mt-4" id="cartitem<%=i%>" style="padding:10px;">
           <div class="image">
-             <img src="/admin/uploads/<%=data.productid[i].Images[0]%>" alt="images">
+             <img src="/admin/uploads/<%=data?.productid[i]?.Images[0]%>" alt="images">
           </div>
           <div class="cartcolspace">
 
           </div>
        <div class="details">
            <div class="producthead">
-               <h4><%=data.productid[i].ProductName%></h4>
-               <i class="fas fa-trash-alt" onclick="removeitem('<%=data.productid[i]._id%>')"></i>
+               <h4><%=data?.productid[i]?.ProductName%></h4>
+               <i class="fas fa-trash-alt" onclick="removeitem('<%=data?.productid[i]?._id%>')"></i>
         </div>
         <div class="rating">
             <span class="filled-star">☆</span>
@@ -49,10 +49,10 @@
             <span class="filled-star">☆</span>
             <span class="filled-star">☆</span>
         </div>
-        <p>color:<%=data.productid[i].Color%></p>
+        <p>color:<%=data?.productid[i].Color%></p>
        
         <div class="pricequantity">
-            <h5>₹<%=data.productid[i].OfferPrice%><del class="striked-price" style="color: rgb(164, 154, 154);"> ₹<%=data.productid[i].RealPrice%></del></h5>
+            <h5>₹<%=data?.productid[i].OfferPrice%><del class="striked-price" style="color: rgb(164, 154, 154);"> ₹<%=data?.productid[i]?.RealPrice%></del></h5>
             <button type="button" class="btn btn-warning mx-2"  id="addedtocart"  data-toggle="modal" data-target="#myModal<%=i%>" onclick="makesizenull()">Add to Cart</button>
             
         </div>

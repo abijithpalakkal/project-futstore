@@ -73,15 +73,15 @@
             <!-- Addresses (Left Side) -->
             <div class="col-lg-6">
                 <h2 style="color: orange;">Select Address</h2>
-                <%for(var i=0;i<userdata.length;i++){%>
+                <%for(var i=0;i<userdata?.length;i++){%>
 
                 
                 <div class="address-box">
-                    <input type="radio" id="address<%= i %>" name="address" value="<%=userdata[i]._id%>">
+                    <input type="radio" id="address<%= i %>" name="address" value="<%=userdata[i]?._id%>">
                     <label for="address<%= i %>">Shipping Address <%=i%></label>
-                    <p><%=userdata[i].fullAddress%></p>
-                    <p>pin code:<%=userdata[i].pincode%></p>
-                    <p>mobile no:<%=userdata[i].mobile_no%></p>
+                    <p><%=userdata[i]?.fullAddress%></p>
+                    <p>pin code:<%=userdata[i]?.pincode%></p>
+                    <p>mobile no:<%=userdata[i]?.mobile_no%></p>
                 </div>
                 <%}%>
                 <h6 style="color: orange;cursor: pointer;" onclick="clickaddress()">add or edit address </h6>
@@ -105,10 +105,10 @@
                         for(var i=0;i<cartdata.productid.length;i++){
                             %>
                         <tr>
-                            <td><%=cartdata.productid[i].ProductName%></td>
-                            <td><img src="/admin/uploads/<%=cartdata.productid[i].Images[0]%>" class="product-img" alt="Product 1 Image"></td>
-                            <td>₹<%=cartdata.productid[i].OfferPrice%></td>
-                            <td><%=cartdata.quantity[i]%></td>
+                            <td><%=cartdata?.productid[i]?.ProductName%></td>
+                            <td><img src="/admin/uploads/<%=cartdata?.productid[i].Images[0]%>" class="product-img" alt="Product 1 Image"></td>
+                            <td>₹<%=cartdata?.productid[i].OfferPrice%></td>
+                            <td><%=cartdata?.quantity[i]%></td>
                             <% var total=cartdata.productid[i].OfferPrice*cartdata.quantity[i]
                                 grandtotal=grandtotal+total%>
                             <td>₹<%=total%> </td>

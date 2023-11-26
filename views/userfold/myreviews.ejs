@@ -87,7 +87,7 @@
     <%-include("./partials/profilesidebar") %>
    <!-- mainform -->
 <div class="container mt-2 col-md-9">
-    <%for(var i=0;i<data.length;i++){%>
+    <%for(var i=0;i<data?.length;i++){%>
     <div class="card-deck mt-3">
 
         <!-- Example Review Card -->
@@ -103,11 +103,11 @@
 
             </div>
             <div>
-                <%if(data[i].reviews){%>
-            <p class="cardtext"><%=data[i].reviews%></p>
+                <%if(data[i]?.reviews){%>
+            <p class="cardtext"><%=data[i]?.reviews%></p>
                 <%}%>
             <div id="starRating1">
-                 <%for(var j=0;j<data[i].rating;j++){%>
+                 <%for(var j=0;j<data[i]?.rating;j++){%>
                     <span class="star1" data-rating="1" ><i class="fas fa-star" style="color: orange;"></i></span>
                  <%}%>
               
@@ -136,7 +136,7 @@
             <div class="modal fade" id="ratingModal<%=i%>" tabindex="-1" role="dialog" aria-labelledby="ratingModalLabel" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered" role="document">
                   <div class="modal-content">
-                    <form method="POST" action="/editreview/<%=data[i].productid._id%>">
+                    <form method="POST" action="/editreview/<%=data[i]?.productid._id%>">
                     <div class="modal-header">
                       <h5 class="modal-title" id="ratingModalLabel">Edit Review</h5>
                       <button type="button" class="close" data-dismiss="modal" aria-label="Close">

@@ -60,9 +60,9 @@
                 
             
                 <h5>Type</h5>
-<% for (var i = 0; i < Catagory.length; i++) { %>
+<% for (var i = 0; i < Catagory?.length; i++) { %>
   <h6><%=Catagory[i].Category %></h6>
-  <% for (var j = 0; j < Catagory[i].type.length; j++) { %>
+  <% for (var j = 0; j < Catagory[i]?.type.length; j++) { %>
     <div class="form-check">
       <input class="form-check-input2" type="checkbox" id="type-laptop" value="<%= Catagory[i].type[j] %>">
       <label class="form-check-label" for="type-laptop"><%= Catagory[i].type[j] %></label>
@@ -83,13 +83,13 @@
                 <h5>Color</h5>
                 <select class="form-select" id="color-filter">
                     <option value="all">All</option>
-                    <%for(var i=0;i<color.length;i++){%>
+                    <%for(var i=0;i<color?.length;i++){%>
                     <option value="<%=color[i]%>"><%=color[i]%></option>
                     <%}%>
                     <!-- Add more color options as needed -->
                 </select>
                 <h5>Brands</h5>
-                <%for(var i=0;i<brand[0].brandnames.length;i++){%>
+                <%for(var i=0;i<brand[0]?.brandnames.length;i++){%>
                 
                 <div class="form-check">
                     <input class="form-check-input1" type="checkbox" id="brand-puma" value="<%=brand[0].brandnames[i]%>">

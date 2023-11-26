@@ -53,7 +53,7 @@
                     <%if(wallet1==null){%>
                         <h1 class="text-success">₹0.00</h1>
                     <%}else{%>
-                    <h1 class="text-success">₹<%=wallet1.wallet%></h1>
+                    <h1 class="text-success">₹<%=wallet1?.wallet%></h1>
                     <%}%>
                 </div>
                 <div class="transaction-history">
@@ -67,7 +67,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <%for(var i=0;i<data.length;i++){%>
+                            <%for(var i=0;i<data?.length;i++){%>
                             <tr>
                                 <%
                                 
@@ -77,11 +77,11 @@ const day = data[i].date.getDate().toString().padStart(2, '0');
 
 const formattedDate = `${year}-${month}-${day}`;%>
                                 <td><%=formattedDate%></td>
-                                <td><%=data[i].description%></td>
-                                <%if(data[i].description=="credited"){%>
-                                <td class="text-success">+₹<%=data[i].amount%></td>
+                                <td><%=data[i]?.description%></td>
+                                <%if(data[i]?.description=="credited"){%>
+                                <td class="text-success">+₹<%=data[i]?.amount%></td>
                                 <%}else{%>
-                                    <td class="text-danger">-₹<%=data[i].amount%></td>
+                                    <td class="text-danger">-₹<%=data[i]?.amount%></td>
                                 <%}%>
                             </tr>
                         <%}%>

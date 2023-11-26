@@ -83,7 +83,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                   <% for(var i=0;i<data.items.length;i++){%>
+                   <% for(var i=0;i<data?.items?.length;i++){%>
                     <tr>
                         <td>
                             <img src="/admin/uploads/<%=data.items[i].productid.Images[0]%>" class="product-image">
@@ -105,7 +105,7 @@
             </table>
 
             <div class="total text-right mt-3">
-                <p>Grand Total:<%=data.total_price%></p>
+                <p>Grand Total:<%=data?.total_price%></p>
             </div>
             <% if (data.status=='order placed' || data.status=='processing'||data.status=='Packed') { %>
                 <button class="cancel-btn btn btn-danger" onclick="cancelorder('<%=data._id%>','<%=data.status%>')">Cancel Order</button>
