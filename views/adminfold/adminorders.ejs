@@ -93,10 +93,10 @@
                                     
                                     <ul class="dropdown-menu">
                                       
-                                        <li><button class="dropdown-item bg-warning" type="button" onclick="statuschange('processing','<%=data[i]._id%>','<%=i%>')">processing</button></li>
-                                        <li><button class="dropdown-item bg-info" type="button" onclick="statuschange('Packed','<%=data[i]._id%>','<%=i%>')">Packed</button></li>
-                                        <li><button class="dropdown-item bg-success" type="button" onclick="statuschange('Shipped','<%=data[i]._id%>','<%=i%>')">Shipped</button></li>
-                                        <li><button class="dropdown-item bg-dark text-white" type="button" onclick="statuschange('Delivered','<%=data[i]._id%>','<%=i%>')">Delivered</button></li>
+                                        <li><button class="dropdown-item bg-warning" type="button" onclick="statuschange('processing','<%=data[i]?._id%>','<%=i%>')">processing</button></li>
+                                        <li><button class="dropdown-item bg-info" type="button" onclick="statuschange('Packed','<%=data[i]?._id%>','<%=i%>')">Packed</button></li>
+                                        <li><button class="dropdown-item bg-success" type="button" onclick="statuschange('Shipped','<%=data[i]?._id%>','<%=i%>')">Shipped</button></li>
+                                        <li><button class="dropdown-item bg-dark text-white" type="button" onclick="statuschange('Delivered','<%=data[i]?._id%>','<%=i%>')">Delivered</button></li>
                                     </ul>
                                 </div>
                                 <%}%>

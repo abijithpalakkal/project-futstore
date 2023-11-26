@@ -11,25 +11,25 @@
 
              <!-- Form -->
  <div class="container mt-5 col-md-9">
-    <h1 class="text-center mb-4"><%if(locals.data){%>edit Product<%}else{%>add product<%}%></h1>
-    <form action="<%= locals.data ? '/editproducts/' + locals.data._id : '/addproduct' %>" method="post" enctype="multipart/form-data">
+    <h1 class="text-center mb-4"><%if(locals?.data){%>edit Product<%}else{%>add product<%}%></h1>
+    <form action="<%= locals?.data ? '/editproducts/' + locals.data._id : '/addproduct' %>" method="post" enctype="multipart/form-data">
         <!-- Product Name -->
         <div class="form-group">
             <label for="productName">Product Name:</label>
-            <input type="text" class="form-control" id="productName" name="ProductName" required value="<%=locals.data.ProductName%>">
+            <input type="text" class="form-control" id="productName" name="ProductName" required value="<%=locals?.data?.ProductName%>">
         </div>
 
         <!-- Description -->
         <div class="form-group">
             <label for="productDescription">Description:</label>
-            <textarea class="form-control" id="productDescription" name="Description" rows="4" ><%= locals.data.Description %></textarea>
+            <textarea class="form-control" id="productDescription" name="Description" rows="4" ><%= locals?.data?.Description %></textarea>
         </div>
 
         <!-- Brand Name -->
         <div class="form-group">
             <label for="brandName">Brand Name:</label>
             <select class="form-control" id="brandName" name="Brand">
-              <option value="<%=data.Brand%>" selected><%=data.Brand%></option>
+              <option value="<%=data?.Brand%>" selected><%=data?.Brand%></option>
               <% for (var i = 0; i < brand.brandnames.length; i++) {
                 const brandName = brand.brandnames[i];
                 if (brandName !== data.Brand) { %>
@@ -45,9 +45,9 @@
         <div class="form-group">
             <label for="category">Category:</label>
             <select class="form-control" id="category" name="Catagory">
-  <option value="<%=data.Catagory%>" selected><%=data.Catagory%></option>
+  <option value="<%=data?.Catagory%>" selected><%=data?.Catagory%></option>
   <% for (var i = 0; i < catagory1.length; i++) {
-    const categoryOption = catagory1[i].Category;
+    const categoryOption = catagory1[i]?.Category;
     if (categoryOption !== data.Catagory) { %>
       <option value="<%= categoryOption %>"><%= categoryOption %></option>
     <% }
@@ -61,11 +61,11 @@
         <div class="form-group">
             <label for="type">Type:</label>
             <select class="form-control" id="type" name="Type">
-              <% for (var i = 0; i < catagory1.length; i++) { %>
-                <option value="<%=data.Type%>" selected><%=data.Type%></option>
-                  <optgroup label="<%= catagory1[i].Category %>">
-                      <% for (var j = 0; j < catagory1[i].type.length; j++) { %>
-                          <option value="<%= catagory1[i].type[j] %>"><%= catagory1[i].type[j] %></option>
+              <% for (var i = 0; i < catagory1?.length; i++) { %>
+                <option value="<%=data.Type%>" selected><%=data?.Type%></option>
+                  <optgroup label="<%= catagory1[i]?.Category %>">
+                      <% for (var j = 0; j < catagory1[i]?.type.length; j++) { %>
+                          <option value="<%= catagory1[i]?.type[j] %>"><%= catagory1[i]?.type[j] %></option>
                       <% } %>
                   </optgroup>
               <% } %>

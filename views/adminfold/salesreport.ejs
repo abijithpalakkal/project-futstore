@@ -51,17 +51,17 @@
         </thead>
         <tbody>
             <!-- Add your table rows with data here -->
-            <%if(data.length>0){
+            <%if(data?.length>0){
                 for(var i=0;i<data.length;i++){%>
             <tr>
-                <th scope="row"><%=data[i]._id%></th>
+                <th scope="row"><%=data[i]?._id%></th>
                 <%const formattedDate = data[i].orderdate.toLocaleDateString('en-US'); // Adjust the locale as needed%>
                 <td><%=formattedDate%></td>
              
-                <td><%=data[i].userid.Username%></td>
-                <td><%=data[i].method%></td>
-                <td><%=data[i].status%></td>
-                <td>₹ <%=data[i].total_price%></td>
+                <td><%=data[i]?.userid.Username%></td>
+                <td><%=data[i]?.method%></td>
+                <td><%=data[i]?.status%></td>
+                <td>₹ <%=data[i]?.total_price%></td>
             </tr>
         <%}%>
         <%}%>
@@ -72,7 +72,7 @@
     <div style="display: flex; gap: 80px;">
         <div style="width: 73.5%;"></div>
         <h4>Total:</h4>
-        <h4 >₹<%=sum[0].total%></h4>
+        <h4 >₹<%=sum[0]?.total%></h4>
     </div>
     
 

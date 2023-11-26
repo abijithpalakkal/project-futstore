@@ -65,7 +65,7 @@
           <label for="type">Type():</label>
           <select class="form-control" id="type" name="Type">
               <% for (var i = 0; i < data.length; i++) { %>
-                  <optgroup label="<%= data[i].Category %>">
+                  <optgroup label="<%= data[i]?.Category %>">
                       <% for (var j = 0; j < data[i].type.length; j++) { %>
                           <option value="<%= data[i].type[j] %>"><%= data[i].type[j] %></option>
                       <% } %>

@@ -25,13 +25,13 @@
                 </tr>
             </thead>
             <tbody>
-                <%if(product.length){
-                    for(i=0;i<product.length;i++){%>
+                <%if(product?.length){
+                    for(i=0;i<product?.length;i++){%>
                 <tr>
-                    <td><%=product[i]._id%></td>
+                    <td><%=product[i]?._id%></td>
                     <td style="width: 100px;"><img src="/admin/Uploads/<%=product[i].Images[1]%>" alt="" style="width: 100%;"></td>
-                    <td><%=product[i].ProductName%></td>
-                    <td><%=product[i].Catagory%></td>
+                    <td><%=product[i]?.ProductName%></td>
+                    <td><%=product[i]?.Catagory%></td>
                     <td><%=product[i].Brand%></td>
                     <td style="font-weight: bold;"><p>In Stock</p><p  <%if(product[i].status==" active "){%>style="color: green;"<%}else{%>style="color:red;"<%}%>><%=product[i].status%></p></td>
                     <td>

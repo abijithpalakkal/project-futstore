@@ -17,7 +17,7 @@
     
     <div class="container mt-5">
         <h2>Create Category Offer</h2>
-        <%if(locals.message){%>
+        <%if(locals?.message){%>
         <h4 style="color: rgb(255, 102, 0);"><%=message%></h4>
         <%}%>
 
@@ -25,10 +25,10 @@
             <div class="form-group">
                 <label for="category">Category:</label>
                 <select class="form-control" id="category" name="category">
-                    <% for (var i = 0; i < data.length; i++) { %>
-                        <optgroup label="<%= data[i].Category %>">
-                            <% for (var j = 0; j < data[i].type.length; j++) { %>
-                                <option value="<%= data[i].type[j] %>"><%= data[i].type[j] %></option>
+                    <% for (var i = 0; i < data?.length; i++) { %>
+                        <optgroup label="<%= data[i]?.Category %>">
+                            <% for (var j = 0; j < data[i]?.type?.length; j++) { %>
+                                <option value="<%= data[i]?.type[j] %>"><%= data[i]?.type[j] %></option>
                             <% } %>
                         </optgroup>
                     <% } %>

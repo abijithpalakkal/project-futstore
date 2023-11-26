@@ -22,17 +22,17 @@
                     <tbody>
                         <%for(var i=0;i<data.length;i++){%>
                         <tr>
-                            <td><%=data[i].Username%></td>
-                            <td><%=data[i].Email%></td>
+                            <td><%=data[i]?.Username%></td>
+                            <td><%=data[i]?.Email%></td>
                             <td><%=orderss[i]%></td>
-                            <td><%if(data[i].status=="active"){%>
+                            <td><%if(data[i]?.status=="active"){%>
                                 <span class="badge badge-success"><%=data[i].status%></span>
                             <%}else{%>
                                 <span class="badge badge-secondary"><%=data[i].status%></span></td>
                             <%}%>
                             <td>
-                                <a href="/enableuser/<%=data[i]._id%>"><button class="btn btn-primary">Enable</button></a>
-                                <a href="/disableuser/<%=data[i]._id%>"><button class="btn btn-danger">Disable</button></a>
+                                <a href="/enableuser/<%=data[i]?._id%>"><button class="btn btn-primary">Enable</button></a>
+                                <a href="/disableuser/<%=data[i]?._id%>"><button class="btn btn-danger">Disable</button></a>
                             </td>
                         </tr>
                         <%}%>

@@ -51,19 +51,19 @@
                     <!-- Sample data for demonstration purposes -->
                     <%for(var i=0;i<data.length;i++){%>
                     <tr>
-                      <td><p>orderid:<%=data[i].orderid.id%></p><p>userid:<%=data[i].userid%></p></td>
-                      <%const year =data[i].orderid.orderdate.getFullYear();
-                       const month = data[i].orderid.orderdate.getMonth() + 1; // Months are zero-based, so add 1
-                        const day = data[i].orderid.orderdate.getDate();
+                      <td><p>orderid:<%=data[i]?.orderid.id%></p><p>userid:<%=data[i]?.userid%></p></td>
+                      <%const year =data[i]?.orderid.orderdate.getFullYear();
+                       const month = data[i]?.orderid.orderdate.getMonth() + 1; // Months are zero-based, so add 1
+                        const day = data[i]?.orderid.orderdate.getDate();
                          const formattedDate = `${year}-${month}-${day}`;%>
                       <td><%=formattedDate%></td>
-                      <td><%=data[i].orderid.method%></td>
+                      <td><%=data[i]?.orderid.method%></td>
                       
                       
                       <td><%=data[i].reason%></td>
                       <td><a href="/adminorderdetails/<%=data[i].orderid._id%>"><button type="button" class="btn btndetails">details</td></a></td>
                         <td>
-                            <% if (data[i].orderid.status == "return requested") { %>
+                            <% if (data[i]?.orderid.status == "return requested") { %>
                                 <p style="color:red;">pending...</p>
                             <% } else { %>
                                 <p style="color: green;">decided</p>
@@ -72,28 +72,28 @@
                         
                       <td>
                         <div class="btn-group">
-                            <%if(data[i].orderid.status == "Return Rejected"){%>
+                            <%if(data[i]?.orderid.status == "Return Rejected"){%>
                                 <p>return rejected</p>
-                            <%}else if(data[i].orderid.status == "Return Approved"){%>
+                            <%}else if(data[i]?.orderid.status == "Return Approved"){%>
                             <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                               <%=data[i].orderid.status%>
+                               <%=data[i]?.orderid.status%>
                             </button>
                             <div class="dropdown-menu">
-                                <a class="dropdown-item" href="#" onclick="statuschange('Return Rejected','<%=data[i].orderid._id%>')">Return Rejected</a>
-                                <a class="dropdown-item" href="#" onclick="statuschange('Return Approved','<%=data[i].orderid._id%>')">Return Approved</a>
-                                <a class="dropdown-item" href="#" onclick="statuschange('product received','<%=data[i].orderid._id%>')">product received</a>
+                                <a class="dropdown-item" href="#" onclick="statuschange('Return Rejected','<%=data[i]?.orderid._id%>')">Return Rejected</a>
+                                <a class="dropdown-item" href="#" onclick="statuschange('Return Approved','<%=data[i]?.orderid._id%>')">Return Approved</a>
+                                <a class="dropdown-item" href="#" onclick="statuschange('product received','<%=data[i]?.orderid._id%>')">product received</a>
                                 
                             </div>
                         <%}else if(data[i].orderid.status == "product received"){%>
                             <p>product received(refunded the amount to wallet)</p>
                         <%}else{%>
                             <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <%=data[i].orderid.status%>
+                                <%=data[i]?.orderid.status%>
                              </button>
                             <div class="dropdown-menu">
-                                <a class="dropdown-item" href="#" onclick="statuschange('Return Rejected','<%=data[i].orderid._id%>')">Return Rejected</a>
-                                <a class="dropdown-item" href="#" onclick="statuschange('Return Approved','<%=data[i].orderid._id%>')">Return Approved</a>
-                                <a class="dropdown-item" href="#" onclick="statuschange('product received','<%=data[i].orderid._id%>')">product received</a>
+                                <a class="dropdown-item" href="#" onclick="statuschange('Return Rejected','<%=data[i]?.orderid._id%>')">Return Rejected</a>
+                                <a class="dropdown-item" href="#" onclick="statuschange('Return Approved','<%=data[i]?.orderid._id%>')">Return Approved</a>
+                                <a class="dropdown-item" href="#" onclick="statuschange('product received','<%=data[i]?.orderid._id%>')">product received</a>
                                 
                             </div>
                         <%}%>

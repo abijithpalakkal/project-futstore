@@ -21,33 +21,33 @@
    <!-- mainform -->
    <div class="container mt-4  col-md-9">
     <h2>Edit/View Coupon </h2>
-    <form id="couponForm" action="/editcoupon/<%=data._id%>" method="post">
+    <form id="couponForm" action="/editcoupon/<%=data?._id%>" method="post">
       <div class="form-group">
         <label for="couponName">Coupon Name:</label>
-        <input type="text" class="form-control" id="couponName" name="couponname" required value="<%=data.couponname%>">
+        <input type="text" class="form-control" id="couponName" name="couponname" required value="<%=data?.couponname%>">
       </div>
       <div class="form-group">
         <label for="couponCode">Coupon Code (at least one capital letter and numbers):</label>
-        <input type="text" pattern="^(?=.*[A-Z])(?=.*\d)[A-Z\d]*$" class="form-control" id="couponCode"  name="couponcode" required value="<%=data.couponcode%>">
+        <input type="text" pattern="^(?=.*[A-Z])(?=.*\d)[A-Z\d]*$" class="form-control" id="couponCode"  name="couponcode" required value="<%=data?.couponcode%>">
       </div>
       <div class="form-group">
         <label for="minAmount">Minimum Amount (must be a number):</label>
-        <input type="number" class="form-control" id="minAmount" name="minimimumamount" required value="<%=data.minimimumamount%>">
+        <input type="number" class="form-control" id="minAmount" name="minimimumamount" required value="<%=data?.minimimumamount%>">
       </div>
       <div class="form-group">
         <label for="expiryDate">Expiry Date:</label>
-        <input type="date" class="form-control" id="expiryDate" name="expirydate" required value="<%=data.expirydate%>">
+        <input type="date" class="form-control" id="expiryDate" name="expirydate" required value="<%=data?.expirydate%>">
       </div>
       <div class="form-group">
         <label for="numCoupons">Number of Coupons (must be a number):</label>
-        <input type="number" class="form-control" id="numCoupons" name="numberofcoupons" required value="<%=data.numberofcoupons%>">
+        <input type="number" class="form-control" id="numCoupons" name="numberofcoupons" required value="<%=data?.numberofcoupons%>">
       </div>
       <div class="form-group" id="forclick">
         <label for="couponType">Coupon Type:</label>
 <select class="form-control" id="couponType" name="coupontype" required>
-    <option value="public" <% if (data.coupontype === 'public') { %>selected<% } %>>Public</option>
-    <option value="private" <% if (data.coupontype === 'private') { %>selected<% } %>>Private</option>
-    <option value="welcome" <% if (data.coupontype === 'welcome') { %>selected<% } %>>Welcome Coupon</option>
+    <option value="public" <% if (data?.coupontype === 'public') { %>selected<% } %>>Public</option>
+    <option value="private" <% if (data?.coupontype === 'private') { %>selected<% } %>>Private</option>
+    <option value="welcome" <% if (data?.coupontype === 'welcome') { %>selected<% } %>>Welcome Coupon</option>
 </select>
 
       </div>
