@@ -134,7 +134,8 @@ const d = await orders.find(
       const color=await products.distinct('Color')
       const offer = await offers.find()
 
-      
+      console.log("Products:", product);
+
      
          res.render("./userfold/productviewpage.ejs",{product,name,brand,Catagory,color,offer})
     }catch{
