@@ -144,13 +144,13 @@
             <!-- Product Cards -->
 
             <div class="col-md-10">
-                <%if(product.length>0){%>
+                <%if(product?.length>0){%>
                 <div class="row" id="ajaxfiltercall">
-                    <%if(product.length>0){
+                    <%if(product?.length>0){
 
-                        for(i=0;i<product.length;i++){%>
+                        for(i=0;i<product?.length;i++){%>
                     <div class="col-md-3  col-sm-6 mb-4" id="card-<%= i %>">
-                        <a href="/productdescription/<%=product[i]._id%>">
+                        <a href="/productdescription/<%=product[i]?._id%>">
                             <div class="card ">
                             <div  class="cardimagediv">
                                 <%
@@ -178,23 +178,23 @@ if (foundObject) {
 
 
                                
-                             <img src="/admin/uploads/<%=product[i].Images[0]%>" class="card-img-top cardimage" alt="Product 1">
+                             <img src="/admin/uploads/<%=product[i].?Images[0]%>" class="card-img-top cardimage" alt="Product 1">
                             </div>
                             <div class="card-body">
-                                <h5 class="card-title"><%=product[i].ProductName%></h5>
-                                <p class="card-text"><%=product[i].Brand%></p>
+                                <h5 class="card-title"><%=product[i]?.ProductName%></h5>
+                                <p class="card-text"><%=product[i]?.Brand%></p>
                                 <p class="card-text" style="font-weight: bold;">
-                                    ₹<%=product[i].OfferPrice%>
-                                    <del class="striked-price"> ₹<%=product[i].RealPrice%></del> 
-                                    <% var discount=(product[i].OfferPrice/product[i].RealPrice)*100
+                                    ₹<%=product[i]?.OfferPrice%>
+                                    <del class="striked-price"> ₹<%=product[i]?.RealPrice%></del> 
+                                    <% var discount=(product[i].OfferPrice/product[i]?.RealPrice)*100
                                     var a=parseInt(100-discount)%>
                                     <span class="offer-price">(<%=a%>%)</span> 
                                   
                                 </p>
-                                <%if(product[i].rating && product[i].rating!=0){%>
+                                <%if(product[i]?.rating && product[i]?.rating!=0){%>
                                
                                 <div class="rating">
-                                    <%for(var j=0;j<product[i].rating;j++){%>
+                                    <%for(var j=0;j<product[i]?.rating;j++){%>
                                     <span class="filled-star">☆</span>
                                     <%}%>
                                 </div>
