@@ -7,6 +7,7 @@ const session=require("express-session")
 const usercontroller=require("../controllers/usercontroller.js")
 const { get } = require("mongoose")
 const{isUserinSession}=require("../middlewares/userauth.js")
+const{nameverify}=require("../middlewares/username.js")
 const cart=require("../config/mongodb/cart.js")
 const reviews=require("../config/mongodb/review.js")
 const coupons=require("../config/mongodb/coupons.js")
@@ -26,6 +27,7 @@ const { ObjectId } = require("mongoose").Types;
 
 
 const router=express.Router()
+router.use(nameverify)
 
 router.get("/home",async(req,res)=>{
   const typedata = [];

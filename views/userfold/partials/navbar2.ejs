@@ -3,7 +3,7 @@
 
     <!-- Replace the default toggle icon with a profile icon, "Hello," and a search icon -->
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-        <i class="fas fa-user"></i> Hello | <i class="fas fa-search"></i>
+        <i class="fas fa-user"></i> | <i class="fas fa-search"></i>
     </button>
 
     <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
@@ -21,7 +21,12 @@
             
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <i class="fas fa-user"></i>  john dow
+                    <i class="fas fa-user"></i> 
+                    <% if (name4) { %>
+                        <%= name4 %>
+                    <% } %>
+                     
+                     
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                     <a class="dropdown-item" href="/shippingaddress">Profile</a>
