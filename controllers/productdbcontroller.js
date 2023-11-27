@@ -114,8 +114,9 @@ const d = await orders.find(
      
       const query=req.query.searchTerm||" "
       try{
-      
-      const product=await products.find({
+       product=await products.find({})
+
+      /*const product=await products.find({
         $or: [
           { ProductName: { $regex:query , $options: 'i' } },
           { Description: { $regex:query, $options: 'i' } },
@@ -126,7 +127,7 @@ const d = await orders.find(
           // Add more fields as needed
         ],
         status:" active "
-      })
+      })*/
      
       const name=req.session.tempuserdetails
       const brand=await brands.find()
