@@ -114,7 +114,7 @@ const d = await orders.find(
      
       const query=req.query.searchTerm||" "
       try{
-       product=await products.find()
+       const product=await products.find()
 
       /*const product=await products.find({
         $or: [
