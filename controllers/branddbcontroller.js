@@ -7,15 +7,19 @@ const getaddbrand=async(req,res)=>{
  }
 
 const postaddbrand=async(req,res)=>{
+   try {
+      const sourceArray = req.body.type
+      if (Array.isArray(sourceArray)) {
+      
+   await brands.updateOne({},{ $push: { brandnames: { $each: sourceArray } } })
+      }else{
+         await brands.updateOne({},{ $push: { brandnames:sourceArray }  })
+      }
+   res.redirect("/catagory")
+   } catch (error) {
+      console.log(error)
+   }
    
-    const sourceArray = req.body.type
-    if (Array.isArray(sourceArray)) {
-    
- await brands.updateOne({},{ $push: { brandnames: { $each: sourceArray } } })
-    }else{
-       await brands.updateOne({},{ $push: { brandnames:sourceArray }  })
-    }
- res.redirect("/catagory")
  }
  
  module.exports={getaddbrand,postaddbrand}
