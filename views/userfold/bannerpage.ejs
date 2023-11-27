@@ -14,7 +14,13 @@
     </div>
     <h3 style="text-align: center;margin: 0;background-color: rgb(255, 111, 0);margin-top: 10px;margin-bottom: 15px;">TRENDING</h3>
     <div id="middle"> 
-        <%for(var i=0;i<5;i++){%>
+        <%var a1=0
+        if(typedata?.length<5){
+            a1=typedata?.length
+        }else{
+            a1=5
+        }%>
+        <%for(var i=0;i<a1;i++){%>
         <div class="imgdiv" style="cursor: pointer;">
             <div>
             <img src="/admin/uploads/<%=typedata[i]?.Images[0]%>">

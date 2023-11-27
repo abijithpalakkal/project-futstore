@@ -41,7 +41,7 @@
         <div class="form-group">
             <label for="brandName">Brand Name:</label>
             <select class="form-control" id="brandName" name="Brand">
-              <%for(var i=0;i<data1.brandnames.length;i++){%>  
+              <%for(var i=0;i<data1?.brandnames.length;i++){%>  
               <option value="<%=data1?.brandnames[i]%>" ><%=data1?.brandnames[i]%></option>
               <%}%>
                 <!-- Add more options as needed -->
@@ -52,7 +52,7 @@
         <div class="form-group">
             <label for="category">Category:</label>
             <select class="form-control" id="category" name="Catagory">
-              <%for(var i=0;i<data.length;i++){%>
+              <%for(var i=0;i<data?.length;i++){%>
                 <option value="<%=data[i]?.Category%>"><%=data[i]?.Category%></option>
                 
                 <!-- Add more options as needed -->

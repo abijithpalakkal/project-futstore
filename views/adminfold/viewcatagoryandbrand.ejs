@@ -29,9 +29,9 @@
                         <%if(data?.length){
                             for(i=0;i<data.length;i++){%>
                         <li class="list-group-item d-flex justify-content-between align-items-center">
-                            <%=data[i].Category%>
+                            <%=data[i]?.Category%>
                             <div>
-                                <a href="/editcatagory/<%=data[i]._id%>"><button type="button" class="btn btn-warning btn-sm mr-2">Edit</button></a>
+                                <a href="/editcatagory/<%=data[i]?._id%>"><button type="button" class="btn btn-warning btn-sm mr-2">Edit</button></a>
                                 <a href=""><button type="button" class="btn btn-danger btn-sm orange-btn" onclick="removeCategory(this)">Remove</button></a>
                             </div>
                         </li>
@@ -50,9 +50,9 @@
                 </div>
                 <div class="card-body">
                     <ul class="list-group" id="brandList">
-                        <%for(var i=0;i<data1.brandnames.length;i++){%>
+                        <%for(var i=0;i<data1?.brandnames.length;i++){%>
                         <li class="list-group-item d-flex justify-content-between align-items-center">
-                            <%=data1.brandnames[i]%>
+                            <%=data1?.brandnames[i]%>
                             <div>
                                 <button type="button" class="btn btn-danger btn-sm orange-btn" onclick="removeBrand(this)">Remove</button>
                             </div>
